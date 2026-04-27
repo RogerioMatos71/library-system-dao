@@ -1,2 +1,3 @@
-2026/04/25-23:45:23.052 91a8 Creating DB C:\Users\roger\OneDrive\Documentos\Rogério\ADS Rogério\LibraryDao\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb since it was missing.
-2026/04/25-23:45:23.171 91a8 Reusing MANIFEST C:\Users\roger\OneDrive\Documentos\Rogério\ADS Rogério\LibraryDao\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2026/04/27-06:44:25.528 6dec Reusing MANIFEST C:\Users\roger\OneDrive\Documentos\Rogério\ADS Rogério\LibraryDao\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2026/04/27-06:44:25.543 6dec Recovering log #3
+2026/04/27-06:44:25.546 6dec Reusing old log C:\Users\roger\OneDrive\Documentos\Rogério\ADS Rogério\LibraryDao\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 
