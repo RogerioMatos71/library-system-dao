@@ -1,0 +1,5 @@
+package model.loan;
+
+public class Loan {
+
+}
