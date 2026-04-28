@@ -1,0 +1,17 @@
+package model.dao;
+
+import java.util.List;
+
+
+import model.user.User;
+
+public interface UserDao {
+	
+	void insert(User obj);
+	void update(User obj);
+	void deleteById(Integer id);
+	Book findById(Integer id);
+	List<User> findAll();
+	
+
+}

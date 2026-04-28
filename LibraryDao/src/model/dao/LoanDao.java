@@ -1,0 +1,14 @@
+package model.dao;
+
+import java.util.List;
+
+import model.loan.Loan;
+
+public interface LoanDao {
+
+	void create(Loan loan);
+    Loan findById(int id);
+    List<Loan> findByUser(int userId);
+    List<Loan> findActiveLoans();
+    void update(Loan loan);
+}
