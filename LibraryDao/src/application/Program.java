@@ -1,17 +1,33 @@
 package application;
 
-import java.sql.Connection;
+import java.util.Scanner;
 
-import db.DB;
+import model.dao.DaoFactory;
+import model.dao.UserDao;
+import model.entities.User;
 
 public class Program {
 
 	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
 	
+		UserDao UserDao = DaoFactory.createUserDao();
 		
-		Connection conn = DB.getConnection();
+		User newUser = InputUtils.readUser(sc);
+		
+		UserDao.insert(newUser);
+
+		System.out.println("Inserted!");
+
 		
 		
+		
+		
+		sc.close();
 		
 	}
+	
+	
+	
 }

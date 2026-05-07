@@ -2,8 +2,7 @@ package model.dao;
 
 import java.util.List;
 
-
-import model.book.Copy;
+import model.entities.Copy;
 
 public interface CopyDao {
 	

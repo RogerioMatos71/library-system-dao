@@ -2,12 +2,12 @@ package model.dao;
 
 import java.util.List;
 
-import model.loan.Loan;
+import model.entities.Loan;
 
 public interface LoanDao {
 
-	void create(Loan loan);
-    Loan findById(int id);
+	void insert(Loan loan);
+    Loan findById(Integer id);
     List<Loan> findByUser(int userId);
     List<Loan> findActiveLoans();
     void update(Loan loan);

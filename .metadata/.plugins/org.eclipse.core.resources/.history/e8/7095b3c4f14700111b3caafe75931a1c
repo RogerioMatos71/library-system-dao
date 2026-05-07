@@ -1,0 +1,97 @@
+package model.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import db.DB;
+import db.DbException;
+import model.dao.LoanDao;
+import model.entities.Loan;
+
+public class LoanDaoJDBC implements LoanDao{
+	
+	private Connection conn;
+	
+	public LoanDaoJDBC (Connection conn) {
+		this.conn = conn;
+	}
+	
+
+	@Override
+	public void insert(Loan loan) {
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement(
+					"INSERT INTO loans " +
+			        "(user_id, copy_id, loan_date, due_date, return_date) " +
+					"VALUES (?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS
+					);
+			
+			st.setInt(1, loan.getUser().getId());
+			st.setInt(2, loan.getCopy().getId());
+			st.setDate(3, java.sql.Date.valueOf(loan.getLoanDate()));
+			st.setDate(4, java.sql.Date.valueOf(loan.getDueDate()));
+			
+			
+			if (loan.getReturnDate() != null) {
+				st.setDate(5, java.sql.Date.valueOf(loan.getReturnDate()));
+			} else {
+				st.setNull(5, java.sql.Types.DATE);
+			}
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if (rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					loan.setId(id);
+				}
+				DB.closeResultSet(rs);
+			} else {
+				throw new DbException("Unexpected error! No rows affected!");
+			}
+			
+		} catch (SQLException e) {
+			throw new DbException (e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+		
+	}
+
+	@Override
+	public Loan findById(int id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(SELECT loans.*, )
+		}
+		return null;
+	}
+
+	@Override
+	public List<Loan> findByUser(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Loan> findActiveLoans() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Loan loan) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

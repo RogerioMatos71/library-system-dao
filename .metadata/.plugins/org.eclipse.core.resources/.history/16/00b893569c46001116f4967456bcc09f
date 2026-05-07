@@ -1,0 +1,22 @@
+package application;
+
+import java.util.Scanner;
+
+public class InpuUtils {
+	
+	Scanner sc = new Scanner(System.in);
+	
+	System.out.print("Enter name: ");
+	String name = sc.nextLine();
+
+	System.out.print("Enter CPF: ");
+	String cpf = sc.nextLine();
+
+	System.out.print("Enter email: ");
+	String email = sc.nextLine();
+	
+	
+	
+	
+
+}
