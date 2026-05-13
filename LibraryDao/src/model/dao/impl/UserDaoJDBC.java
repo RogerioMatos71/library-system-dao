@@ -1,10 +1,12 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.util.List;
 
 import db.DB;
@@ -12,10 +14,10 @@ import db.DbException;
 import model.dao.UserDao;
 import model.entities.User;
 
-public class UserDaoJDBC implements UserDao{
-	
-private Connection conn;
-	
+public class UserDaoJDBC implements UserDao {
+
+	private Connection conn;
+
 	public UserDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
@@ -24,49 +26,66 @@ private Connection conn;
 	public void insert(User obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO users " +
-					"(name, cpf, email) " +
-					"VALUES " +
-					"(?, ?, ?)",
+			st = conn.prepareStatement("INSERT INTO users " + "(name, cpf, email) " + "VALUES " + "(?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getCpf());
 			st.setString(3, obj.getEmail());
-			
+
 			int rowsAffected = st.executeUpdate();
-			
+
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					obj.setId(id);
 				}
-			}
-			else {
+			} else {
 				throw new DbException("Unexpected error! No rows affected!");
-				
+
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
 
 	@Override
-	public void update(User obj) {
-		// TODO Auto-generated method stub
-		
+	public void update(User user) {
+		PreparedStatement st = null;
+
+		try {
+			if (user.getId() == null) {
+				throw new DbException("Invalid user id!");
+			}
+			st = conn.prepareStatement("UPDATE users " + "SET name = ?, cpf = ?, email = ? " + "WHERE id = ?");
+
+			st.setString(1, user.getName());
+			st.setString(2, user.getCpf());
+			st.setString(3, user.getEmail());
+
+			st.setInt(4, user.getId());
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected == 0) {
+				throw new DbException("No user found with this id");
+			}
+
+		} catch (SQLException e) {
+			throw new DbException("Error updating user", e);
+		} finally {
+			DB.closeStatement(st);
+		}
+
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -77,6 +96,18 @@ private Connection conn;
 
 	@Override
 	public List<User> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User findByCpf(String cpf) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> findByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

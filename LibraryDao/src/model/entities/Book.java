@@ -89,6 +89,12 @@ public class Book {
 		Book other = (Book) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	@Override
+	public String toString() {
+		return "Book_Id = " + id + ", Title = " + title + ", Author = " + author + ", ISBN = " + isbn + ", Publisher = "
+				+ publisher + ", Year_Publication = " + yearPublication;
+	}
 	
 	
 	

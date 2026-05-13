@@ -72,6 +72,13 @@ public class Loan {
 	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
 	}
+
+	@Override
+	public String toString() {
+		return "Loan Loan_id = " + id + ", User = " + user + ", Copy = " + copy + ", Loan_Date = " + loanDate + ", Due_Date = "
+				+ dueDate + ", Return_Date = " + returnDate;
+	}
+	
 	
 	
 

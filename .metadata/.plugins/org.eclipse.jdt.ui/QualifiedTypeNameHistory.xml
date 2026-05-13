@@ -2,19 +2,21 @@
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="model.book.Book"/>
     <fullyQualifiedTypeName name="model.book.Copy"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.sql.DriverManager"/>
     <fullyQualifiedTypeName name="com.mysql.cj.xdevapi.Result"/>
     <fullyQualifiedTypeName name="java.sql.Connection"/>
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
     <fullyQualifiedTypeName name="model.dao.impl.UserDaoJDBC"/>
-    <fullyQualifiedTypeName name="model.dao.UserDao"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
     <fullyQualifiedTypeName name="java.sql.Statement"/>
-    <fullyQualifiedTypeName name="java.sql.Date"/>
-    <fullyQualifiedTypeName name="java.sql.Types"/>
     <fullyQualifiedTypeName name="java.sql.ResultSet"/>
     <fullyQualifiedTypeName name="db.DB"/>
     <fullyQualifiedTypeName name="model.entities.Copy"/>
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="model.entities.Book"/>
+    <fullyQualifiedTypeName name="java.sql.Date"/>
+    <fullyQualifiedTypeName name="java.sql.Types"/>
+    <fullyQualifiedTypeName name="java.awt.desktop.UserSessionEvent"/>
+    <fullyQualifiedTypeName name="model.dao.UserDao"/>
 </qualifiedTypeNameHistroy>

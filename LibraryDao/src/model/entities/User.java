@@ -79,6 +79,12 @@ public class User {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+
+	@Override
+	public String toString() {
+		return "User User_Id = " + id + ", Name = " + name + ", CPF = " + cpf + ", email = " + email;
 	} 
 	
 	

@@ -1,0 +1,46 @@
+package application;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import model.dao.DaoFactory;
+import model.dao.LoanDao;
+import model.entities.Loan;
+
+public class Program {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		List<Loan> loan = new ArrayList<>();
+	
+		//UserDao UserDao = DaoFactory.createUserDao();
+		
+		//User newUser = InputUtils.readUser(sc);
+		
+		//UserDao.insert(newUser);
+
+		//System.out.println("Inserted!");
+		
+		LoanDao loanDao = DaoFactory.createLoanDao();
+		
+		 loan = loanDao.findByUser("Joao Silva");
+		
+		System.out.println(loan);
+		
+		
+		
+
+		
+		
+		
+		
+		sc.close();
+		
+	}
+	
+	
+	
+}

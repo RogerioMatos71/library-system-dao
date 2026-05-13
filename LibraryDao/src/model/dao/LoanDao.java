@@ -8,7 +8,7 @@ public interface LoanDao {
 
 	void insert(Loan loan);
     Loan findById(Integer id);
-    List<Loan> findByUser(int userId);
-    List<Loan> findActiveLoans();
+    List<Loan> findByUser(String name);
+    //List<Loan> findActiveLoansByUserId();
     void update(Loan loan);
 }
