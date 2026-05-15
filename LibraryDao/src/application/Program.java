@@ -1,5 +1,6 @@
 package application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import db.DB;
@@ -15,16 +16,12 @@ public class Program {
 		
 		 UserDao userDao = new UserDaoJDBC(DB.getConnection());
 
-	        User user = new User();
+	        List<User> user = userDao.findAll();
+	        
 
-	        user.setId(15); // id que exista no banco
-	        user.setName("Rogerio");
-	        user.setCpf("137665008");
-	        user.setEmail("rogerio@email.com");
+	       // userDao.update(user);
 
-	        userDao.update(user);
-
-	        System.out.println("User updated successfully!");
+	        System.out.println(user);
 	        
 	        
 	        sc.close();

@@ -73,6 +73,10 @@ public class LoanDaoJDBC implements LoanDao {
 		ResultSet rs = null;
 		try {
 
+			if (id == null) {
+				throw new DbException("Invalid user id!");
+			}
+
 			st = conn.prepareStatement("SELECT l.*, " + "u.id as user_id, u.name as user_name, u.cpf, u.email, "
 					+ "b.id as book_id, b.title, b.author, b.isbn, b.publisher, b.year_publication, "
 					+ "c.id as copy_id, c.status " + "FROM loans l " + "LEFT JOIN users u ON l.user_id = u.id "
@@ -87,6 +91,7 @@ public class LoanDaoJDBC implements LoanDao {
 
 			}
 			return null;
+
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
@@ -129,34 +134,30 @@ public class LoanDaoJDBC implements LoanDao {
 	@Override
 	public void update(Loan loan) {
 		PreparedStatement st = null;
-		
+
 		try {
-			
-			st = conn.prepareStatement(
-					"UPDATE loans " +
-			        "SET user_id = ?, copy_id = ?, loan_date = ?, due_date = ?, return_date = ? " +
-					"WHERE id = ?");
-			
+
+			st = conn.prepareStatement("UPDATE loans "
+					+ "SET user_id = ?, copy_id = ?, loan_date = ?, due_date = ?, return_date = ? " + "WHERE id = ?");
+
 			st.setInt(1, loan.getUser().getId());
 			st.setInt(2, loan.getCopy().getId());
 			st.setDate(3, Date.valueOf(loan.getLoanDate()));
 			st.setDate(4, Date.valueOf(loan.getDueDate()));
-			
+
 			if (loan.getReturnDate() != null) {
 				st.setDate(5, Date.valueOf(loan.getReturnDate()));
 			} else {
 				st.setNull(5, Types.DATE);
 			}
 			st.setInt(6, loan.getId());
-			
+
 			st.executeUpdate();
-		} 
-		 catch (SQLException e) {
-			 throw new DbException (e.getMessage());
-		 } finally {
-			 DB.closeStatement(st);
-		 }
-		
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 

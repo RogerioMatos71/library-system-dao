@@ -1,12 +1,11 @@
 package model.dao.impl;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -84,32 +83,168 @@ public class UserDaoJDBC implements UserDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			if (id == null) {
+				throw new DbException("Invalid user id!");
+			}
+			st = conn.prepareStatement("DELETE FROM users " + "WHERE id = ?");
+
+			st.setInt(1, id);
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected == 0) {
+				throw new DbException("No user found with this id");
+			}
+
+		} catch (SQLException e) {
+			throw new DbException("Error deleting user", e);
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
 	@Override
 	public User findById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+
+			if (id == null) {
+				throw new DbException("Invalid user id!");
+			}
+
+			st = conn.prepareStatement("SELECT * FROM users " + "WHERE id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				User user = instantiateUser(rs);
+
+				return user;
+
+			}
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 		return null;
+	}
+
+	private User instantiateUser(ResultSet rs) throws SQLException {
+
+		User user = new User();
+
+		user.setId(rs.getInt("id"));
+		user.setName(rs.getString("name"));
+		user.setCpf(rs.getString("cpf"));
+		user.setEmail(rs.getString("email"));
+
+		return user;
 	}
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+
+			List<User> users = new ArrayList<>();
+
+			st = conn.prepareStatement("SELECT * FROM users");
+
+			rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				User user = instantiateUser(rs);
+				users.add(user);
+
+			}
+
+			if (users.isEmpty()) {
+				throw new DbException("User not found");
+			}
+
+			return users;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
 	}
 
 	@Override
 	public User findByCpf(String cpf) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+
+			if (cpf == null) {
+				throw new DbException("Invalid user cpf!");
+			}
+
+			st = conn.prepareStatement("SELECT * FROM users " + "WHERE cpf = ?");
+			st.setString(1, cpf);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				User user = instantiateUser(rs);
+
+				return user;
+
+			}
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 		return null;
 	}
 
 	@Override
 	public List<User> findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
 
+			if (name == null) {
+				throw new DbException("Invalid user name!");
+			}
+
+			st = conn.prepareStatement("SELECT * FROM users " + "WHERE name = ?");
+
+			st.setString(1, name);
+			rs = st.executeQuery();
+
+			List<User> users = new ArrayList<>();
+			while (rs.next()) {
+				User user = instantiateUser(rs);
+				users.add(user);
+
+			}
+
+			if (users.isEmpty()) {
+				throw new DbException("User not found");
+
+			}
+			return users;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+	}
 }
