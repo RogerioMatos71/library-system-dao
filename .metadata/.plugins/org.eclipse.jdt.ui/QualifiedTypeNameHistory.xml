@@ -13,10 +13,10 @@
     <fullyQualifiedTypeName name="db.DB"/>
     <fullyQualifiedTypeName name="model.entities.Copy"/>
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="model.entities.Book"/>
     <fullyQualifiedTypeName name="java.sql.Date"/>
     <fullyQualifiedTypeName name="java.sql.Types"/>
     <fullyQualifiedTypeName name="java.awt.desktop.UserSessionEvent"/>
     <fullyQualifiedTypeName name="model.dao.UserDao"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

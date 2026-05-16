@@ -1,8 +1,15 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
+import db.DB;
+import db.DbException;
 import model.dao.BookDao;
 import model.entities.Book;
 
@@ -15,10 +22,49 @@ private Connection conn;
 	}
 
 	@Override
-	public void insert(Book obj) {
-		// TODO Auto-generated method stub
+	public void insert(Book book) {
 		
-	}
+			PreparedStatement st = null;
+			
+			if (existsByIsbn(book.getIsbn())) {
+			    throw new RuntimeException("Book already registered!");
+			}
+			
+			try {
+				st = conn.prepareStatement("INSERT INTO books " + 
+			                               "(title, author, isbn, publisher, year_publication) " + 
+						                   "VALUES " + "(?, ?, ?, ?, ?)",
+						                    Statement.RETURN_GENERATED_KEYS);
+
+				st.setString(1, book.getTitle());
+				st.setString(2, book.getAuthor());
+				st.setString(3, book.getIsbn());
+				st.setString(4, book.getPublisher());
+				st.setInt(5, book.getYearPublication());
+
+				int rowsAffected = st.executeUpdate();
+				
+				
+
+				if (rowsAffected > 0) {
+					ResultSet rs = st.getGeneratedKeys();
+					if (rs.next()) {
+						int id = rs.getInt(1);
+						book.setId(id);
+					}
+				} else {
+					throw new DbException("Unexpected error! No rows affected!");
+
+				}
+			} catch (SQLException e) {
+				throw new DbException(e.getMessage());
+			} finally {
+				DB.closeStatement(st);
+			}
+		}
+
+		
+	
 
 	@Override
 	public void update(Book obj) {
@@ -44,4 +90,24 @@ private Connection conn;
 		return null;
 	}
 
+	public boolean existsByIsbn(String isbn) {
+	    
+	    PreparedStatement st = null;
+	    try {
+	    	 st = conn.prepareStatement("SELECT COUNT(*) FROM books WHERE isbn = ?"); 
+
+	        st.setString(1, isbn);
+
+	        ResultSet rs = st.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
 }

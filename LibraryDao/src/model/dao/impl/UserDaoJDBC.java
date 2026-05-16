@@ -22,15 +22,15 @@ public class UserDaoJDBC implements UserDao {
 	}
 
 	@Override
-	public void insert(User obj) {
+	public void insert(User user) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement("INSERT INTO users " + "(name, cpf, email) " + "VALUES " + "(?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 
-			st.setString(1, obj.getName());
-			st.setString(2, obj.getCpf());
-			st.setString(3, obj.getEmail());
+			st.setString(1, user.getName());
+			st.setString(2, user.getCpf());
+			st.setString(3, user.getEmail());
 
 			int rowsAffected = st.executeUpdate();
 
@@ -38,7 +38,7 @@ public class UserDaoJDBC implements UserDao {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
-					obj.setId(id);
+					user.setId(id);
 				}
 			} else {
 				throw new DbException("Unexpected error! No rows affected!");
