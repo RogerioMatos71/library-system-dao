@@ -1,0 +1,49 @@
+package application;
+
+import java.util.Scanner;
+
+import db.DB;
+import model.dao.BookDao;
+import model.dao.impl.BookDaoJDBC;
+import model.entities.Book;
+
+public class Program {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		 BookDao bookDao = new BookDaoJDBC(DB.getConnection());
+
+	        Book book = new Book();
+	        
+	       
+	        
+	        bookDao.deleteById(0);
+	        
+	        System.out.println("Book successfully deleted!");
+	        
+
+	        
+	       // userDao.update(user);
+
+	       
+	        
+	        
+	        sc.close();
+	    }
+	
+		
+		
+
+		
+		
+		
+	
+		
+		
+	}
+	
+	
+	
+

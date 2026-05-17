@@ -1,0 +1,53 @@
+package application;
+
+import java.util.Scanner;
+
+import db.DB;
+import model.dao.BookDao;
+import model.dao.impl.BookDaoJDBC;
+import model.entities.Book;
+
+public class Program {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		 BookDao bookDao = new BookDaoJDBC(DB.getConnection());
+
+	        Book book = new Book();
+	        
+	        book.setTitle("João e Maria");
+	        book.setAuthor("Zé da Roça");
+	        book.setIsbn("AA258F5258");
+	        book.setPublisher("Editora amarela");
+	        book.setYearPublication(1958);
+	        
+	        bookDao.update(book);
+	        
+	        System.out.println("Book successfully updated!");
+	        
+
+	        
+	       // userDao.update(user);
+
+	       
+	        
+	        
+	        sc.close();
+	    }
+	
+		
+		
+
+		
+		
+		
+	
+		
+		
+	}
+	
+	
+	
+

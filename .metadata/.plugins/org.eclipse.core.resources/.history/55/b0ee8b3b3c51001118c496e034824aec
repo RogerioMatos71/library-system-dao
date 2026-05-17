@@ -1,0 +1,149 @@
+package model.dao.impl;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+import db.DB;
+import db.DbException;
+import model.dao.BookDao;
+import model.entities.Book;
+
+public class BookDaoJDBC implements BookDao {
+
+	private Connection conn;
+
+	public BookDaoJDBC(Connection conn) {
+		this.conn = conn;
+	}
+
+	@Override
+	public void insert(Book book) {
+
+		PreparedStatement st = null;
+
+		if (existsByIsbn(book.getIsbn())) {
+			throw new RuntimeException("Book already registered!");
+		}
+
+		try {
+			st = conn.prepareStatement("INSERT INTO books " + "(title, author, isbn, publisher, year_publication) "
+					+ "VALUES " + "(?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+			st.setString(1, book.getTitle());
+			st.setString(2, book.getAuthor());
+			st.setString(3, book.getIsbn());
+			st.setString(4, book.getPublisher());
+			st.setInt(5, book.getYearPublication());
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					book.setId(id);
+				}
+			} else {
+				throw new DbException("Unexpected error! No rows affected!");
+
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+	}
+
+	@Override
+	public void update(Book book) {
+		PreparedStatement st = null;
+		
+		if (!existsByIsbn(book.getIsbn())) {
+			throw new DbException("Book not found!");
+		}
+		
+		if (book.getId() == null) {
+			throw new DbException("Invalid Book id!");
+		}
+
+		try {
+
+			st = conn.prepareStatement("UPDATE books "
+					+ "SET title = ?, author = ?, isbn = ?, publisher = ?, year_publication = ? " + "WHERE id = ?");
+
+			st.setString(1, book.getTitle());
+			st.setString(2, book.getAuthor());
+			st.setString(3, book.getIsbn());
+			st.setString(4, book.getPublisher());
+			st.setInt(5, book.getYearPublication());
+			st.setInt(6, book.getId());
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if (rowsAffected == 0) {
+				throw new DbException("No rows affected!");
+			}
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+
+	}
+
+	@Override
+	public void deleteById(Integer id) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Book findById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Book> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean existsByIsbn(String isbn) {
+
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT COUNT(*) FROM books WHERE isbn = ?");
+
+			st.setString(1, isbn);
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt(1) > 0;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+	
+	public boolean existsById(Integer id) {
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement(null)
+		}
+		
+		
+		return false;
+	}
+}

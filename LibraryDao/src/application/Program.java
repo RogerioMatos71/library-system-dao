@@ -17,16 +17,12 @@ public class Program {
 
 	        Book book = new Book();
 	        
-	        book.setTitle("João e Maria");
-	        book.setAuthor("Zé da Roça");
-	        book.setIsbn("97801322568");
-	        book.setPublisher("Editora azul");
-	        book.setYearPublication(1971);
+	       
 	        
-	        bookDao.insert(book);
+	        bookDao.deleteById(7);
 	        
-	        System.out.println("Book successfully inserted!");
-	        System.out.print("Book Id: " + book.getId());
+	        System.out.println("Book successfully deleted!");
+	        
 
 	        
 	       // userDao.update(user);
