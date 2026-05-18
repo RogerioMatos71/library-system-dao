@@ -1,6 +1,7 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -123,46 +124,8 @@ public class BookDaoJDBC implements BookDao {
 
 	@Override
 	public Book findById(Integer id) {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		if (id == null) {
-			throw new DbException("Invalid id");
-		}
-
-		try {
-			st = conn.prepareStatement("SELECT * FROM books WHERE id = ?");
-
-			st.setInt(1, id);
-			rs = st.executeQuery();
-			if (rs.next()) {
-				Book book = instantiateBook(rs);
-
-				return book;
-			}
-
-			throw new DbException("Book not found!");
-
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		} finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-		}
-
-	}
-
-	private Book instantiateBook(ResultSet rs) throws SQLException {
-		Book book = new Book();
-
-		book.setId(rs.getInt("id"));
-		book.setTitle(rs.getString("title"));
-		book.setAuthor(rs.getString("author"));
-		book.setIsbn(rs.getString("isbn"));
-		book.setPublisher(rs.getString("publisher"));
-		book.setYearPublication(rs.getInt("year_publication"));
-
-		return book;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

@@ -15,10 +15,11 @@ public class Program {
 		
 		 BookDao bookDao = new BookDaoJDBC(DB.getConnection());
 
-	        Book book = bookDao.findById(15);
+	        Book book = new Book();
+	        
 	       
 	        
-	       System.out.println(book);
+	        book = bookDao.findById(15);
 	        
 	      
 

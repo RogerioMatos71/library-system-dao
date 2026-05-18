@@ -140,9 +140,7 @@ public class BookDaoJDBC implements BookDao {
 
 				return book;
 			}
-
-			throw new DbException("Book not found!");
-
+			return null;
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
@@ -155,7 +153,6 @@ public class BookDaoJDBC implements BookDao {
 	private Book instantiateBook(ResultSet rs) throws SQLException {
 		Book book = new Book();
 
-		book.setId(rs.getInt("id"));
 		book.setTitle(rs.getString("title"));
 		book.setAuthor(rs.getString("author"));
 		book.setIsbn(rs.getString("isbn"));

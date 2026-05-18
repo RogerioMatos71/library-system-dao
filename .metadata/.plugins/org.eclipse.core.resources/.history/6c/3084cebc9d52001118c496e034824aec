@@ -140,9 +140,7 @@ public class BookDaoJDBC implements BookDao {
 
 				return book;
 			}
-
-			throw new DbException("Book not found!");
-
+			return null;
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
