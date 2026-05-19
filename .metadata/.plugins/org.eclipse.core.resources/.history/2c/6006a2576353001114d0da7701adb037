@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -168,33 +167,11 @@ public class BookDaoJDBC implements BookDao {
 
 	@Override
 	public List<Book> findAll() {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		List<Book> books = new ArrayList<>();
-
-		try {
-			st = conn.prepareStatement("SELECT * FROM library.books");
-			rs = st.executeQuery();
-			while (rs.next()) {
-				Book book = instantiateBook(rs);
-				books.add(book);
-
-			}
-			if (books.isEmpty()) {
-				throw new DbException("Books not found!");
-			}
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		} finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-		}
-
-		return books;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	private boolean existsByIsbn(String isbn) {
+	public boolean existsByIsbn(String isbn) {
 
 		PreparedStatement st = null;
 		try {
@@ -215,7 +192,7 @@ public class BookDaoJDBC implements BookDao {
 		return false;
 	}
 
-	private boolean existsById(Integer id) {
+	public boolean existsById(Integer id) {
 		PreparedStatement st = null;
 
 		try {

@@ -170,31 +170,33 @@ public class BookDaoJDBC implements BookDao {
 	public List<Book> findAll() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
-
+		
 		List<Book> books = new ArrayList<>();
-
+		
 		try {
 			st = conn.prepareStatement("SELECT * FROM library.books");
 			rs = st.executeQuery();
 			while (rs.next()) {
 				Book book = instantiateBook(rs);
 				books.add(book);
-
-			}
-			if (books.isEmpty()) {
+			
+			} if (books.isEmpty()) {
 				throw new DbException("Books not found!");
 			}
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		} finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-		}
-
+			} catch (SQLException e) {
+				throw new DbException(e.getMessage());
+			} finally {
+				DB.closeStatement(st);
+				DB.closeResultSet(rs);
+			}
+			
+		
+		
+		
 		return books;
 	}
 
-	private boolean existsByIsbn(String isbn) {
+	public boolean existsByIsbn(String isbn) {
 
 		PreparedStatement st = null;
 		try {
@@ -215,7 +217,7 @@ public class BookDaoJDBC implements BookDao {
 		return false;
 	}
 
-	private boolean existsById(Integer id) {
+	public boolean existsById(Integer id) {
 		PreparedStatement st = null;
 
 		try {

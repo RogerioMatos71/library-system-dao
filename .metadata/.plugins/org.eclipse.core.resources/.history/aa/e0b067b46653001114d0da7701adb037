@@ -1,6 +1,5 @@
 package application;
 
-import java.util.List;
 import java.util.Scanner;
 
 import db.DB;
@@ -16,7 +15,7 @@ public class Program {
 		
 		 BookDao bookDao = new BookDaoJDBC(DB.getConnection());
 
-	        List<Book> book = bookDao.findAll();
+	        Book book = bookDao.findById(15);
 	       
 	        
 	       System.out.println(book);

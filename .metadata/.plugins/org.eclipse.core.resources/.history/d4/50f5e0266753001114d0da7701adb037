@@ -194,7 +194,7 @@ public class BookDaoJDBC implements BookDao {
 		return books;
 	}
 
-	private boolean existsByIsbn(String isbn) {
+	public boolean existsByIsbn(String isbn) {
 
 		PreparedStatement st = null;
 		try {
@@ -215,7 +215,7 @@ public class BookDaoJDBC implements BookDao {
 		return false;
 	}
 
-	private boolean existsById(Integer id) {
+	public boolean existsById(Integer id) {
 		PreparedStatement st = null;
 
 		try {
