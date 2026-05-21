@@ -25,6 +25,7 @@ public class BookDaoJDBC implements BookDao {
 	public void insert(Book book) {
 
 		PreparedStatement st = null;
+		ResultSet rs = null;
 
 		if (existsByIsbn(book.getIsbn())) {
 			throw new RuntimeException("Book already registered!");
@@ -43,7 +44,7 @@ public class BookDaoJDBC implements BookDao {
 			int rowsAffected = st.executeUpdate();
 
 			if (rowsAffected > 0) {
-				ResultSet rs = st.getGeneratedKeys();
+				 rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
 					book.setId(id);
@@ -56,6 +57,7 @@ public class BookDaoJDBC implements BookDao {
 			throw new DbException(e.getMessage());
 		} finally {
 			DB.closeStatement(st);
+			DB.closeResultSet(rs);
 		}
 	}
 

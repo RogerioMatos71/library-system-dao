@@ -1,48 +1,34 @@
 package application;
 
-import java.util.List;
 import java.util.Scanner;
 
 import db.DB;
-import model.dao.BookDao;
-import model.dao.impl.BookDaoJDBC;
+import model.dao.CopyDao;
+import model.dao.impl.CopyDaoJDBC;
 import model.entities.Book;
+import model.entities.Copy;
 
 public class Program {
 
 	public static void main(String[] args) {
-		
+
 		Scanner sc = new Scanner(System.in);
-		
-		 BookDao bookDao = new BookDaoJDBC(DB.getConnection());
 
-	        List<Book> book = bookDao.findAll();
-	       
-	        
-	       System.out.println(book);
-	        
-	      
+		CopyDao copyDao = new CopyDaoJDBC(DB.getConnection());
 
-	        
-	       // userDao.update(user);
+		Copy copy = new Copy();
+		
+		
+		
+		copy.setStatus("available");
+		copy.setId(null);
+		
+		copyDao.update(copy);
+		
+		
+		System.out.println("Copy update succesfully!");
 
-	       
-	        
-	        
-	        sc.close();
-	    }
-	
-		
-		
-
-		
-		
-		
-	
-		
-		
+		sc.close();
 	}
-	
-	
-	
 
+}
