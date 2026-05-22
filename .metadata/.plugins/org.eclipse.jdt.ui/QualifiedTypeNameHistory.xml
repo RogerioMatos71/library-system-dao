@@ -21,4 +21,5 @@
     <fullyQualifiedTypeName name="model.entities.Copy"/>
     <fullyQualifiedTypeName name="model.entities.Book"/>
     <fullyQualifiedTypeName name="db.DB"/>
+    <fullyQualifiedTypeName name="model.dao.impl.CopyDaoJDBC"/>
 </qualifiedTypeNameHistroy>

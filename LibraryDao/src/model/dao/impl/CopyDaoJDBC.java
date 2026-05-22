@@ -10,6 +10,7 @@ import java.util.List;
 import db.DB;
 import db.DbException;
 import model.dao.CopyDao;
+import model.entities.Book;
 import model.entities.Copy;
 
 public class CopyDaoJDBC implements CopyDao {
@@ -81,14 +82,70 @@ public class CopyDaoJDBC implements CopyDao {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		if (id == null) {
+			throw new DbException("Invalid copy id!");
+		}
+
+		try {
+			st = conn.prepareStatement("DELETE FROM copies WHERE id = ?");
+
+			st.setInt(1, id);
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected == 0) {
+				throw new DbException("No copy id found!");
+			}
+		} catch (SQLException e) {
+			new DbException("Error updating copy", e);
+
+		} finally {
+			DB.closeStatement(st);
+		}
 
 	}
 
 	@Override
 	public Copy findById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		if (id == null) {
+			throw new DbException("Invalid copy id!");
+		}
+
+		try {
+			st = conn.prepareStatement("SELECT * FROM copies WHERE id = ?");
+
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Copy copy = instantiateCopy(rs);
+
+				return copy;
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
 		return null;
+	}
+
+	private Copy instantiateCopy(ResultSet rs) throws SQLException {
+		Copy copy = new Copy();
+		Book book = new Book();
+
+		copy.setId(rs.getInt("id"));
+		book.setId(rs.getInt("book_id"));
+		copy.setBook(book);
+		copy.setStatus(rs.getString("status"));
+		return copy;
+
 	}
 
 	@Override
