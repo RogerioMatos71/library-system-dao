@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -150,8 +151,34 @@ public class CopyDaoJDBC implements CopyDao {
 
 	@Override
 	public List<Copy> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		List<Copy> copies = new ArrayList<>();
+
+		try {
+			st = conn.prepareStatement("SELECT * FROM copies");
+
+			rs = st.executeQuery();
+			while (rs.next()) {
+
+				Copy copy = instantiateCopy(rs);
+
+				copies.add(copy);
+			}
+
+			if (copies.isEmpty()) {
+				throw new DbException("Copies not found!");
+			}
+
+			return copies;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

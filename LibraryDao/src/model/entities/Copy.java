@@ -61,9 +61,14 @@ public class Copy {
 		return Objects.equals(id, other.id);
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Copy Copy_id = " + id + ", Book = " + book + ", Status = " + status;
+	    return "Copy_id: " + id
+	        + "\nBook_id: " + book.getId()
+	        + "\nStatus: " + status
+	        + "\n";
 	}
-
 }
+	        
+	       

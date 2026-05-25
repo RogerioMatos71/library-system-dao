@@ -1,0 +1,27 @@
+package application;
+
+import java.util.Scanner;
+
+import model.entities.User;
+
+public class InputUtils {
+	
+	public static Scanner sc = new Scanner(System.in);
+	
+	public static int readInt(String msg) {
+		System.out.println("Enter the option: ");
+		return sc.nextInt();
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+} 

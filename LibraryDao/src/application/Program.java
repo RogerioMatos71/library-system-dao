@@ -1,37 +1,31 @@
 package application;
 
-import java.util.Scanner;
-
-import db.DB;
-import model.dao.CopyDao;
-import model.dao.impl.CopyDaoJDBC;
-import model.entities.Book;
-import model.entities.Copy;
+import model.dao.DaoFactory;
+import model.dao.UserDao;
+import model.entities.User;
 
 public class Program {
 
 	public static void main(String[] args) {
 
-		Scanner sc = new Scanner(System.in);
+		MenuController.start();
+	
+	
+	
+	
+		
+	    	
+	
 
-		CopyDao copyDao = new CopyDaoJDBC(DB.getConnection());
 
-		
-		
-		
-		
-		Copy copy = copyDao.findById(1);
-		
-		System.out.println(copy.getId());
-		System.out.println(copy.getStatus());
-		System.out.println(copy.getBook().getId());
-		
-		
-		
 		
 		
 
-		sc.close();
+		
 	}
 
-}
+		
+	}
+
+
+

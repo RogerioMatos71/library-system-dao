@@ -5,25 +5,26 @@ import java.util.Scanner;
 import model.entities.User;
 
 public class InputUtils {
-	
-	Scanner sc = new Scanner(System.in);
-	
-	public static User readUser(Scanner sc) {
-	
-	System.out.print("Enter name: ");
-	String name = sc.nextLine();
 
-	System.out.print("Enter CPF: ");
-	String cpf = sc.nextLine();
+	public static Scanner sc = new Scanner(System.in);
 
-	System.out.print("Enter email: ");
-	String email = sc.nextLine();
-	
-	return new User(null, name, cpf, email);
+	public static int readInt(String msg) {
+		System.out.print(msg);
+		int value = sc.nextInt();
+		sc.nextLine();
+		return value;
+		
+
 	}
 	
+	public static String readLine(String msg) {
+		System.out.print(msg);
+		return sc.nextLine();
+	}
 	
-	
-	
+	public static void pause() {
+		System.out.println("\nPress enter to continue...");
+		sc.nextLine();
+	}
 
 }

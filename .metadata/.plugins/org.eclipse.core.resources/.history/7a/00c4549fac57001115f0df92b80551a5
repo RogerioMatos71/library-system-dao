@@ -1,0 +1,58 @@
+package application;
+
+import java.util.Scanner;
+
+import db.DB;
+import model.dao.DaoFactory;
+import model.dao.UserDao;
+import model.dao.impl.UserDaoJDBC;
+import model.entities.User;
+
+public class MenuController {
+	
+	Scanner sc = new Scanner(System.in);
+	
+	public static void start() {
+		
+		int option;
+		
+		
+		do {
+			Menu.mainMenu();
+			
+			option = InputUtils.readInt("Enter the option: ");
+			
+			switch (option) {
+			
+			
+			case 1:
+			
+
+				UserDao userDao = DaoFactory.createUserDao();
+				
+				User user = new User();
+				
+				user.setName("Codonho");
+				user.setCpf("12345678922");
+				user.setEmail("codonho@gmail.com");
+				
+				userDao.insert(user);
+				
+				System.out.println("Inserted!");
+				
+			    break;
+			
+			}
+		} while (option != 0);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+}

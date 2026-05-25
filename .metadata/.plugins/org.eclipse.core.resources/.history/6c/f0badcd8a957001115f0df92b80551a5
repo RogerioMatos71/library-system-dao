@@ -1,0 +1,42 @@
+package application;
+
+import model.dao.DaoFactory;
+import model.dao.UserDao;
+import model.entities.User;
+
+public class Program {
+
+	public static void main(String[] args) {
+
+		
+	UserDao userDao = DaoFactory.createUserDao();
+	
+	User user = new User();
+	
+	user.setName("Passoni");
+	user.setCpf("12345678900");
+	user.setEmail("passoni@gmail.com");
+	
+	userDao.insert(user);
+	
+	System.out.println("Inserted!");
+	
+	
+	
+	
+		
+	    	
+	
+
+} 
+		
+		
+
+		
+		
+
+		
+	}
+
+
+

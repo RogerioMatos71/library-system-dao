@@ -1,0 +1,37 @@
+package application;
+
+import java.util.Scanner;
+
+public class MenuController {
+	
+	Scanner sc = new Scanner(System.in);
+	
+	public static void start() {
+		
+		int option;
+		
+		do {
+			Menu.mainMenu();
+			
+			option = InputUtils.readInt("Enter the option: ");
+			
+			switch (option) {
+			
+			case 1:
+				System.out.println("Adding user...");
+				break;
+			
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+}

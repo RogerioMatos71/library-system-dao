@@ -1,0 +1,63 @@
+package application;
+
+import java.util.Scanner;
+
+import model.dao.DaoFactory;
+import model.dao.UserDao;
+import model.entities.User;
+
+public class MenuController {
+
+	Scanner sc = new Scanner(System.in);
+
+	public static void start() {
+
+		int option;
+
+		do {
+			Menu.mainMenu();
+
+			option = InputUtils.readInt("Enter the option: ");
+
+			switch (option) {
+
+			case 1:
+
+				UserDao userDao = DaoFactory.createUserDao();
+
+				User user = new User();
+
+				user.setName(InputUtils.readLine("Name: "));
+				user.setCpf(InputUtils.readLine("Cpf: "));
+				user.setEmail(InputUtils.readLine("Email: "));
+
+				userDao.insert(user);
+
+				System.out.println("Inserted! New Id = " + user.getId());
+
+				InputUtils.pause();
+
+				break;
+
+			
+			
+			case 2:
+				
+			    userDao = DaoFactory.createUserDao();
+			    
+			     user = userDao.findByCpf(InputUtils.readLine("Cpf: "));
+				
+				Menu.showUser(user);
+				
+				InputUtils.pause();
+				
+				break;
+			}
+				
+		} while (option != 0);
+		
+
+	}
+	
+
+}
