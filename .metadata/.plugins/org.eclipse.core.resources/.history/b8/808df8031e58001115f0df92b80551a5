@@ -42,19 +42,8 @@ public class MenuController {
 			case 2:
 
 				userDao = DaoFactory.createUserDao();
-				
-				 user = null;
-				
-				while (user == null) {
-					String cpf = InputUtils.readLine("Enter user cpf to consult: ");
-					user = userDao.findByCpf(cpf);
-					
-					if (user == null) {
-						System.out.println("User not found, try again");
-					}
-				}
 
-				
+				user = userDao.findByCpf(InputUtils.readLine("Cpf: "));
 
 				Menu.showUser(user);
 

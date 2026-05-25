@@ -190,6 +190,7 @@ public class UserDaoJDBC implements UserDao {
 
 			if (cpf == null) {
 				throw new DbException("Invalid user cpf!");
+
 			}
 
 			st = conn.prepareStatement("SELECT * FROM users " + "WHERE cpf = ?");

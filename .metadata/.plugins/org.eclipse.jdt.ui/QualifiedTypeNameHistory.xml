@@ -22,4 +22,10 @@
     <fullyQualifiedTypeName name="db.DB"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="model.entities.User"/>
+    <fullyQualifiedTypeName name="model.dao.DaoFactory"/>
+    <fullyQualifiedTypeName name="application.MenuController"/>
+    <fullyQualifiedTypeName name="application.Menu"/>
+    <fullyQualifiedTypeName name="application.InputUtils"/>
 </qualifiedTypeNameHistroy>

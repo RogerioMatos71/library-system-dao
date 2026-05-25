@@ -43,7 +43,7 @@ public class MenuController {
 
 				userDao = DaoFactory.createUserDao();
 				
-				 user = null;
+				User user = null;
 				
 				while (user == null) {
 					String cpf = InputUtils.readLine("Enter user cpf to consult: ");

@@ -39,45 +39,31 @@ public class MenuController {
 
 				break;
 
+			
+			
 			case 2:
-
-				userDao = DaoFactory.createUserDao();
 				
-				 user = null;
+			    userDao = DaoFactory.createUserDao();
+			    
+			     user = userDao.findByCpf(InputUtils.readLine("Cpf: "));
 				
-				while (user == null) {
-					String cpf = InputUtils.readLine("Enter user cpf to consult: ");
-					user = userDao.findByCpf(cpf);
-					
-					if (user == null) {
-						System.out.println("User not found, try again");
-					}
-				}
-
-				
-
 				Menu.showUser(user);
-
+				
 				InputUtils.pause();
-
+				
 				break;
-
-			case 3:
-
-				userDao = DaoFactory.createUserDao();
-
-				userDao.deleteById(InputUtils.readInt("Enter user id to delete: "));
-
-				System.out.println("User deleted!");
-
-				InputUtils.pause();
-
-				break;
-
 			}
-
+			
+			case 3:
+				
+				userDao = DaoFactory.createUserDao();
+				
+				user = userDao.
+				
 		} while (option != 0);
+		
 
 	}
+	
 
 }
