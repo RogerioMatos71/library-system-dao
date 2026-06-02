@@ -5,12 +5,12 @@ import java.util.List;
 import model.entities.Copy;
 
 public interface CopyDao {
-	
+
 	void insert(Copy copy);
-	void update(Copy copy);
+	void upDate(Copy copy);
 	void deleteById(Integer id);
 	Copy findById(Integer id);
+
 	List<Copy> findAll();
-	
 
 }

@@ -1,15 +1,14 @@
 package application;
 
-import model.dao.DaoFactory;
-import model.dao.UserDao;
-import model.entities.User;
+import java.sql.SQLException;
 
 public class Program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 
 		MenuController.start();
-	
+		
+		
 	
 	
 	

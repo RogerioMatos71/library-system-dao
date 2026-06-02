@@ -4,10 +4,8 @@
     <fullyQualifiedTypeName name="model.book.Copy"/>
     <fullyQualifiedTypeName name="java.sql.DriverManager"/>
     <fullyQualifiedTypeName name="com.mysql.cj.xdevapi.Result"/>
-    <fullyQualifiedTypeName name="java.sql.Connection"/>
     <fullyQualifiedTypeName name="model.dao.impl.UserDaoJDBC"/>
     <fullyQualifiedTypeName name="java.sql.ResultSet"/>
-    <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="java.sql.Date"/>
     <fullyQualifiedTypeName name="java.sql.Types"/>
     <fullyQualifiedTypeName name="java.awt.desktop.UserSessionEvent"/>
@@ -16,10 +14,6 @@
     <fullyQualifiedTypeName name="java.sql.Statement"/>
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
     <fullyQualifiedTypeName name="model.dao.CopyDao"/>
-    <fullyQualifiedTypeName name="model.entities.Copy"/>
-    <fullyQualifiedTypeName name="model.entities.Book"/>
-    <fullyQualifiedTypeName name="model.dao.impl.CopyDaoJDBC"/>
-    <fullyQualifiedTypeName name="db.DB"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
@@ -27,5 +21,16 @@
     <fullyQualifiedTypeName name="model.dao.DaoFactory"/>
     <fullyQualifiedTypeName name="application.MenuController"/>
     <fullyQualifiedTypeName name="application.Menu"/>
+    <fullyQualifiedTypeName name="model.entities.Book"/>
     <fullyQualifiedTypeName name="application.InputUtils"/>
+    <fullyQualifiedTypeName name="java.lang.IllegalStateException"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
+    <fullyQualifiedTypeName name="db.DB"/>
+    <fullyQualifiedTypeName name="model.dao.impl.CopyDaoJDBC"/>
+    <fullyQualifiedTypeName name="copies.enums.CopyStatus"/>
+    <fullyQualifiedTypeName name="services.LoanService"/>
+    <fullyQualifiedTypeName name="model.dao.impl.LoanDaoJDBC"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="model.dao.LoanDao"/>
+    <fullyQualifiedTypeName name="model.entities.Copy"/>
 </qualifiedTypeNameHistroy>

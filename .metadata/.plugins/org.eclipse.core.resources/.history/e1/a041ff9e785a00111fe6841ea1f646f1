@@ -1,0 +1,31 @@
+package services;
+
+import application.InputUtils;
+import copies.enums.CopyStatus;
+import db.DbException;
+import model.dao.CopyDao;
+import model.dao.UserDao;
+import model.entities.Copy;
+import model.entities.User;
+
+public class LoanService implements CopyDao {
+	
+	
+    User user = new User();
+    private UserDao userDao = new UserDao();
+    Copy copy = new Copy();
+    CopyDao copyDao = null;
+   
+	
+	public void borrowBook(CopyStatus status) {
+		
+		userDao.findByCpf(InputUtils.readLine("Enter user cpf: "));
+		copyDao.findById(InputUtils.readInt("Enter copy id: "));
+		if (status == CopyStatus.BORROWED) {
+			throw new DbException("Book not available");
+		}
+		
+		
+	}
+
+}

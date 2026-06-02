@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import copies.enums.CopyStatus;
 import db.DB;
 import db.DbException;
 import model.dao.LoanDao;
@@ -184,7 +185,7 @@ public class LoanDaoJDBC implements LoanDao {
 
 		// COPY
 		copy.setId(rs.getInt("copy_id"));
-		copy.setStatus(rs.getString("status"));
+		copy.setStatus(CopyStatus.valueOf(rs.getString("status")));
 		copy.setBook(book);
 
 		// LOAN

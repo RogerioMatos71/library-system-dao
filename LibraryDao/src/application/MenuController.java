@@ -2,9 +2,13 @@ package application;
 
 import java.util.Scanner;
 
+import model.dao.BookDao;
 import model.dao.DaoFactory;
 import model.dao.UserDao;
+import model.entities.Book;
+import model.entities.Copy;
 import model.entities.User;
+import services.LoanService;
 
 public class MenuController {
 
@@ -42,21 +46,20 @@ public class MenuController {
 			case 2:
 
 				userDao = DaoFactory.createUserDao();
-				
-				 user = null;
-				
+
+				user = null;
+				Copy copy = new Copy();
+
 				while (user == null) {
 					String cpf = InputUtils.readLine("Enter user cpf to consult: ");
 					user = userDao.findByCpf(cpf);
-					
+
 					if (user == null) {
 						System.out.println("User not found, try again");
 					}
 				}
 
-				
-
-				Menu.showUser(user);
+				Menu.showUser(user, copy);
 
 				InputUtils.pause();
 
@@ -73,6 +76,54 @@ public class MenuController {
 				InputUtils.pause();
 
 				break;
+
+			case 4:
+
+				BookDao bookDao = DaoFactory.createBookDao();
+
+				Book book = new Book();
+
+				book.setTitle(InputUtils.readLine("Title: "));
+				book.setAuthor(InputUtils.readLine("Author: "));
+				book.setIsbn(InputUtils.readLine("ISBN: "));
+				book.setPublisher(InputUtils.readLine("Publisher: "));
+				book.setYearPublication(InputUtils.readInt("Year Publication: "));
+
+				bookDao.insert(book);
+
+				System.out.println("Book inserted! New Id: " + book.getId());
+
+				InputUtils.pause();
+
+			case 5:
+
+				bookDao = DaoFactory.createBookDao();
+
+				book = bookDao.findById(InputUtils.readInt("Insert book id to consult: "));
+
+				System.out.println(book);
+
+				InputUtils.pause();
+
+			case 10:
+
+				LoanService loan = new LoanService();
+
+				loan.borrowBook();
+
+				System.out.println("Book borrowed!");
+
+				InputUtils.pause();
+				
+			case 11:
+				
+				loan = new LoanService();
+				
+				loan.returnBook();
+				
+				System.out.println("Book returned!");
+				
+				InputUtils.pause();
 
 			}
 

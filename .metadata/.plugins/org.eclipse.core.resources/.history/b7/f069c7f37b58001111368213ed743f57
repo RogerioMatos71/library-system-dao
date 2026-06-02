@@ -1,0 +1,83 @@
+package application;
+
+import java.util.Scanner;
+
+import model.dao.DaoFactory;
+import model.dao.UserDao;
+import model.entities.User;
+
+public class MenuController {
+
+	Scanner sc = new Scanner(System.in);
+
+	public static void start() {
+
+		int option;
+
+		do {
+			Menu.mainMenu();
+
+			option = InputUtils.readInt("Enter the option: ");
+
+			switch (option) {
+
+			case 1:
+
+				UserDao userDao = DaoFactory.createUserDao();
+
+				User user = new User();
+
+				user.setName(InputUtils.readLine("Name: "));
+				user.setCpf(InputUtils.readLine("Cpf: "));
+				user.setEmail(InputUtils.readLine("Email: "));
+
+				userDao.insert(user);
+
+				System.out.println("Inserted! New Id = " + user.getId());
+
+				InputUtils.pause();
+
+				break;
+
+			case 2:
+
+				userDao = DaoFactory.createUserDao();
+				
+				 user = null;
+				
+				while (user == null) {
+					String cpf = InputUtils.readLine("Enter user cpf to consult: ");
+					user = userDao.findByCpf(cpf);
+					
+					if (user == null) {
+						System.out.println("User not found, try again");
+					}
+				}
+
+				
+
+				Menu.showUser(user);
+
+				InputUtils.pause();
+
+				break;
+
+			case 3:
+
+				userDao = DaoFactory.createUserDao();
+
+				userDao.deleteById(InputUtils.readInt("Enter user id to delete: "));
+
+				System.out.println("User deleted!");
+
+				InputUtils.pause();
+
+				break;
+
+			}
+
+		} while (option != 0);
+
+	}
+
+}

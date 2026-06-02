@@ -1,0 +1,41 @@
+package application;
+
+import java.sql.ResultSet;
+
+import copies.enums.CopyStatus;
+import model.entities.Copy;
+
+public class Program {
+
+	public static void main(String[] args) {
+
+		//MenuController.start();
+		
+		Copy copy = new Copy();
+		
+		ResultSet rs = null;
+		
+		String status = rs.getString("status");
+		System.out.println("Status lido do banco: [" + status + "]");
+
+		copy.setStatus(CopyStatus.valueOf(status));
+	
+	
+	
+	
+		
+	    	
+	
+
+
+		
+		
+
+		
+	}
+
+		
+	}
+
+
+

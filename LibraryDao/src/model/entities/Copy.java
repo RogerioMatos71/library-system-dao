@@ -2,18 +2,20 @@ package model.entities;
 
 import java.util.Objects;
 
+import copies.enums.CopyStatus;
+
 public class Copy {
 
 	private Integer id;
 	private Book book; // referência ao livro
-	private String status; // DISPONIVEL, EMPRESTADO, DANIFICADO
+	private CopyStatus status; // DISPONIVEL, EMPRESTADO, DANIFICADO
 	// private String location;
 
 	public Copy() {
 
 	}
 
-	public Copy(Integer id, Book book, String status) {
+	public Copy(Integer id, Book book, CopyStatus status) {
 		this.id = id;
 		this.book = book;
 		this.status = status;
@@ -36,13 +38,11 @@ public class Copy {
 		this.book = book;
 	}
 
-	public String getStatus() {
+	public CopyStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	
 
 	@Override
 	public int hashCode() {
@@ -68,6 +68,27 @@ public class Copy {
 	        + "\nBook_id: " + book.getId()
 	        + "\nStatus: " + status
 	        + "\n";
+	}
+	
+	public void borrow() {
+		if (status != CopyStatus.AVAILABLE) {
+			throw new IllegalStateException("Copy unavailable!");
+		}
+		
+		status = CopyStatus.BORROWED;
+	}
+	
+	
+	public void giveBack() {
+		if (status != CopyStatus.BORROWED) {
+			throw new IllegalStateException("Copy unavailable to return!");
+		}
+		status = CopyStatus.AVAILABLE;
+	}
+
+	public void setStatus(CopyStatus status) {
+		this.status = status;
+		
 	}
 }
 	        

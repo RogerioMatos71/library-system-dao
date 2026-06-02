@@ -1,0 +1,26 @@
+package services;
+
+import application.InputUtils;
+import model.dao.CopyDao;
+import model.dao.UserDao;
+import model.entities.Copy;
+import model.entities.User;
+
+public class LoanService {
+	
+	
+    User user = new User();
+    UserDao userDao = new UserDao();
+    Copy copy = new Copy();
+    CopyDao copyDao = new CopyDao();
+	
+	public void borrowBook() {
+		
+		userDao.findByCpf(InputUtils.readLine("Enter user cpf: "));
+		copyDao.findById(InputUtils.readInt("Enter copy id: "));
+		if (copy.getStatus()copy == )
+		
+		
+	}
+
+}

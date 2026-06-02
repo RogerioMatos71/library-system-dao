@@ -1,5 +1,6 @@
 package application;
 
+import model.entities.Copy;
 import model.entities.User;
 
 public class Menu {
@@ -17,14 +18,23 @@ public class Menu {
 		System.out.println("7 - Add copy");
 		System.out.println("8 - Consult copy");
 		System.out.println("9 - Delete copy");
+		System.out.println("10 - Borrow book");
+		System.out.println("11 - Return book");
 		System.out.println("0 - Exit");
 		
 	}
 	
-	public static void showUser(User user) {
+	public static void showUser(User user, Copy copy) {
 		System.out.println("Name: "+ user.getName());
 		System.out.println("CPF: " + user.getCpf());
 		System.out.println("Email: " + user.getEmail());
+		System.out.println("Loan id: " + copy.getId());
+	}
+	
+	public void showInvalidUser() {
+		System.out.println("Invalid user cpf! Try again...");
+		InputUtils.pause();
+		
 	}
 	
 
