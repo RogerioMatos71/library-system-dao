@@ -3,6 +3,7 @@ package model.dao;
 import java.util.List;
 
 import model.entities.Loan;
+import services.LoanService;
 
 public interface LoanDao {
 
@@ -11,4 +12,5 @@ public interface LoanDao {
     List<Loan> findByUser(String name);
     //List<Loan> findActiveLoansByUserId();
     void update(Loan loan);
+	Loan findByCpf(String cpf);
 }

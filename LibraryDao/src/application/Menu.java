@@ -24,11 +24,11 @@ public class Menu {
 		
 	}
 	
-	public static void showUser(User user, Copy copy) {
+	public static void showUser(User user) {
 		System.out.println("Name: "+ user.getName());
 		System.out.println("CPF: " + user.getCpf());
 		System.out.println("Email: " + user.getEmail());
-		System.out.println("Loan id: " + copy.getId());
+		
 	}
 	
 	public void showInvalidUser() {

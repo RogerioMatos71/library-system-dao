@@ -1,5 +1,0 @@
-package copies.enums;
-
-public enum CopyStatus {
-
-}

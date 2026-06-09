@@ -2,10 +2,8 @@ package services;
 
 import java.time.LocalDate;
 
-import application.InputUtils;
 import copies.enums.CopyStatus;
 import db.DB;
-import db.DbException;
 import model.dao.CopyDao;
 import model.dao.LoanDao;
 import model.dao.UserDao;
@@ -15,59 +13,77 @@ import model.dao.impl.UserDaoJDBC;
 import model.entities.Copy;
 import model.entities.Loan;
 import model.entities.User;
+import model.exceptions.BusinessException;
 
 public class LoanService {
 
-	private UserDao userDao = new UserDaoJDBC(DB.getConnection());
+	private UserDao userDao;
+	private CopyDao copyDao;
+	private LoanDao loanDao;
 
-	private CopyDao copyDao = new CopyDaoJDBC(DB.getConnection());
+	public LoanService() {
+		userDao = new UserDaoJDBC(DB.getConnection());
+		copyDao = new CopyDaoJDBC(DB.getConnection());
+		loanDao = new LoanDaoJDBC(DB.getConnection());
+	}
 
-	public void borrowBook() {
+	public Loan borrowBook(String cpf, Integer copyId) {
+
+		User user = userDao.findByCpf(cpf);
+		Copy copy = copyDao.findById(copyId);
+
+		if (user == null) {
+			throw new BusinessException("User not found!");
+		}
+
+		if (copy == null) {
+			throw new BusinessException("Copy not found!");
+		}
+
+		if (copy.getStatus() == CopyStatus.BORROWED) {
+			throw new BusinessException("Book not available");
+
+		}
 
 		LocalDate loanDate = LocalDate.now();
 		LocalDate dueDate = loanDate.plusDays(7);
-		LocalDate returnDate = null;
-		LoanDao loanDao = new LoanDaoJDBC(DB.getConnection());
 
-		User user = userDao.findByCpf(InputUtils.readLine("Enter user cpf: "));
-		Copy copy = copyDao.findById(InputUtils.readInt("Enter copy id: "));
-
-		if (copy.getStatus() == CopyStatus.BORROWED) {
-			throw new DbException("Book not available");
-
-		}
+		Loan loan = new Loan(null, user, copy, loanDate, dueDate, null);
 
 		copy.borrow();
 
 		copyDao.upDate(copy);
-
-		Loan loan = new Loan(null, user, copy, loanDate, dueDate, returnDate);
-
 		loanDao.insert(loan);
 
+		return loan;
+
 	}
-	
-	public void returnBook() {
-		
-	     LoanDao loanDao = new LoanDaoJDBC(DB.getConnection());
-	     LocalDate dueDate = null;
-	     LocalDate loanDate = null;
-		 LocalDate returnDate = null;
-		 User user = userDao.findByCpf(InputUtils.readLine("Enter user cpf: "));
-		 Copy copy = copyDao.findById(InputUtils.readInt("Enter copy id to return: "));
-		 
-		 if (copy.getStatus() == CopyStatus.AVAILABLE) {
-			 throw new DbException("Book not available to return!");
-		 }
-		 
-		 copy.giveBack();
-		 
-		 copyDao.upDate(copy);
-		 
-		 Loan loan = new Loan(null, user, copy, loanDate, dueDate, returnDate);
-		 
-		 loanDao.update(loan);
-		 
+
+	public void returnBook(String cpf, Integer loanId) {
+
+		User user = userDao.findByCpf(cpf);
+		Loan loan = loanDao.findById(loanId);
+
+		if (user == null) {
+			throw new BusinessException("User not found!");
+		}
+
+		if (loan == null) {
+			throw new BusinessException("Loan not found!");
+		}
+
+		LocalDate returnDate = LocalDate.now();
+
+		loan.setReturnDate(returnDate);
+
+		loanDao.update(loan);
+
+		CopyStatus status = CopyStatus.AVAILABLE;
+
+		loan.getCopy().setStatus(status);
+
+		copyDao.upDate(loan.getCopy());
+
 	}
 
 }

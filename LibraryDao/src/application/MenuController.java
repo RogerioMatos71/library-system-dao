@@ -1,12 +1,15 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import model.dao.BookDao;
 import model.dao.DaoFactory;
+import model.dao.LoanDao;
 import model.dao.UserDao;
 import model.entities.Book;
-import model.entities.Copy;
+import model.entities.Loan;
 import model.entities.User;
 import services.LoanService;
 
@@ -45,23 +48,27 @@ public class MenuController {
 
 			case 2:
 
-				userDao = DaoFactory.createUserDao();
+				LoanDao loanDao = DaoFactory.createLoanDao();
 
-				user = null;
-				Copy copy = new Copy();
+				
 
-				while (user == null) {
-					String cpf = InputUtils.readLine("Enter user cpf to consult: ");
-					user = userDao.findByCpf(cpf);
+				
+				String cpf = null;
+				while (cpf == null) {
+					 InputUtils.readLine("Enter user name to consult: ");
 
-					if (user == null) {
+					 Loan loan = loanDao.findByCpf(cpf);
+
+					if (cpf == null) {
 						System.out.println("User not found, try again");
 					}
 				}
 
-				Menu.showUser(user, copy);
-
+				System.out.println(loans);
+				
 				InputUtils.pause();
+				
+				
 
 				break;
 
@@ -95,6 +102,8 @@ public class MenuController {
 
 				InputUtils.pause();
 
+				break;
+
 			case 5:
 
 				bookDao = DaoFactory.createBookDao();
@@ -105,25 +114,37 @@ public class MenuController {
 
 				InputUtils.pause();
 
+				break;
+
 			case 10:
 
-				LoanService loan = new LoanService();
+				
+				LoanService loanService = new LoanService();
+				String cpf = InputUtils.readLine("Enter user cpf: ");
+				int copyId = InputUtils.readInt("Enter copy id: ");
 
-				loan.borrowBook();
+				Loan loan = loanService.borrowBook(cpf, copyId);
 
-				System.out.println("Book borrowed!");
+				System.out.println("Book borrowed! New Loan id: " + loan.getId());
 
 				InputUtils.pause();
-				
+
+				break;
+
 			case 11:
-				
-				loan = new LoanService();
-				
-				loan.returnBook();
-				
+
+				loanService = new LoanService();
+
+				cpf = InputUtils.readLine("Enter user cpf: ");
+				int loanId = InputUtils.readInt("Enter loan id to return: ");
+
+				loanService.returnBook(cpf, loanId);
+
 				System.out.println("Book returned!");
-				
+
 				InputUtils.pause();
+
+				break;
 
 			}
 

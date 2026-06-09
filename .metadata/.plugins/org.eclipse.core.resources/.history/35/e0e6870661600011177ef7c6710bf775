@@ -1,0 +1,62 @@
+package services;
+
+import java.time.LocalDate;
+
+import copies.enums.CopyStatus;
+import db.DB;
+import db.DbException;
+import model.dao.CopyDao;
+import model.dao.LoanDao;
+import model.dao.impl.CopyDaoJDBC;
+import model.dao.impl.LoanDaoJDBC;
+import model.entities.Copy;
+import model.entities.Loan;
+import model.entities.User;
+
+public class LoanService {
+
+	private CopyDao copyDao = new CopyDaoJDBC(DB.getConnection());
+
+	public void borrowBook() {
+
+		
+		LoanDao loanDao = new LoanDaoJDBC(DB.getConnection());
+		
+
+		if (copy.getStatus() == CopyStatus.BORROWED) {
+			throw new DbException("Book not available");
+
+		}
+
+		Copy copy = copy.borrow(copy);
+
+		copyDao.upDate(copy);
+
+		
+
+	}
+
+	public void returnBook() {
+
+		LoanDao loanDao = new LoanDaoJDBC(DB.getConnection());
+		LocalDate dueDate = null;
+		LocalDate loanDate = null;
+		LocalDate returnDate = null;
+		User user = new User();
+		Copy copy = new Copy();
+
+		Loan loan = new Loan(null, user, copy, loanDate, dueDate, returnDate);
+
+		if (copy.getStatus() == CopyStatus.AVAILABLE) {
+			throw new DbException("Book not available to return!");
+		}
+
+		copy.giveBack();
+
+		copyDao.upDate(copy);
+
+		loanDao.update(loan);
+
+	}
+
+}

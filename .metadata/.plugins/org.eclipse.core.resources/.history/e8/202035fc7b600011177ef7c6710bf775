@@ -1,0 +1,151 @@
+package application;
+
+import java.util.Scanner;
+
+import db.DB;
+import model.dao.BookDao;
+import model.dao.DaoFactory;
+import model.dao.LoanDao;
+import model.dao.UserDao;
+import model.dao.impl.LoanDaoJDBC;
+import model.dao.impl.UserDaoJDBC;
+import model.entities.Book;
+import model.entities.Copy;
+import model.entities.Loan;
+import model.entities.User;
+import services.LoanService;
+
+public class MenuController {
+
+	Scanner sc = new Scanner(System.in);
+
+	public static void start() {
+
+		int option;
+
+		do {
+			Menu.mainMenu();
+
+			option = InputUtils.readInt("Enter the option: ");
+
+			switch (option) {
+
+			case 1:
+
+				UserDao userDao = DaoFactory.createUserDao();
+
+				User user = new User();
+
+				user.setName(InputUtils.readLine("Name: "));
+				user.setCpf(InputUtils.readLine("Cpf: "));
+				user.setEmail(InputUtils.readLine("Email: "));
+
+				userDao.insert(user);
+
+				System.out.println("Inserted! New Id = " + user.getId());
+
+				InputUtils.pause();
+
+				break;
+
+			case 2:
+
+				userDao = DaoFactory.createUserDao();
+
+				user = null;
+				Copy copy = new Copy();
+
+				while (user == null) {
+					String cpf = InputUtils.readLine("Enter user cpf to consult: ");
+					user = userDao.findByCpf(cpf);
+
+					if (user == null) {
+						System.out.println("User not found, try again");
+					}
+				}
+
+				Menu.showUser(user, copy);
+
+				InputUtils.pause();
+
+				break;
+
+			case 3:
+
+				userDao = DaoFactory.createUserDao();
+
+				userDao.deleteById(InputUtils.readInt("Enter user id to delete: "));
+
+				System.out.println("User deleted!");
+
+				InputUtils.pause();
+
+				break;
+
+			case 4:
+
+				BookDao bookDao = DaoFactory.createBookDao();
+
+				Book book = new Book();
+
+				book.setTitle(InputUtils.readLine("Title: "));
+				book.setAuthor(InputUtils.readLine("Author: "));
+				book.setIsbn(InputUtils.readLine("ISBN: "));
+				book.setPublisher(InputUtils.readLine("Publisher: "));
+				book.setYearPublication(InputUtils.readInt("Year Publication: "));
+
+				bookDao.insert(book);
+
+				System.out.println("Book inserted! New Id: " + book.getId());
+
+				InputUtils.pause();
+
+			case 5:
+
+				bookDao = DaoFactory.createBookDao();
+
+				book = bookDao.findById(InputUtils.readInt("Insert book id to consult: "));
+
+				System.out.println(book);
+
+				InputUtils.pause();
+
+			case 10:
+
+				Loan loan = new Loan();
+				LoanService loanService = new LoanService();
+				String cpf = InputUtils.readLine("Enter user cpf: ");
+				int copyId = InputUtils.readInt("Enter copy id: ");
+				
+				
+						loanService.borrowBook(cpf, copyId);
+						
+						System.out.println("Book borrowed! New Loan id: " + loan.getId() );
+
+						
+						
+						
+			case 11:
+
+				//copyDao = new CopyDaoJDBC(DB.getConnection());
+				userDao = new UserDaoJDBC(DB.getConnection());
+				LoanDao loanDao = new LoanDaoJDBC(DB.getConnection());
+
+				loanService = new LoanService();
+
+				user = userDao.findByCpf(InputUtils.readLine("Enter user cpf: "));
+				//loan = loanDao.findById(InputUtils.readInt("Enter loan id to return: "));
+
+				loanService.returnBook();
+
+				System.out.println("Book returned!");
+
+				InputUtils.pause();
+
+			}
+
+		} while (option != 0);
+
+	}
+
+}

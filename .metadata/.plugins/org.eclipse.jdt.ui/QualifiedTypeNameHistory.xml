@@ -14,7 +14,6 @@
     <fullyQualifiedTypeName name="java.sql.Statement"/>
     <fullyQualifiedTypeName name="java.sql.SQLException"/>
     <fullyQualifiedTypeName name="model.dao.CopyDao"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
     <fullyQualifiedTypeName name="model.entities.User"/>
@@ -22,15 +21,17 @@
     <fullyQualifiedTypeName name="application.MenuController"/>
     <fullyQualifiedTypeName name="application.Menu"/>
     <fullyQualifiedTypeName name="model.entities.Book"/>
-    <fullyQualifiedTypeName name="application.InputUtils"/>
-    <fullyQualifiedTypeName name="java.lang.IllegalStateException"/>
     <fullyQualifiedTypeName name="java.sql.Connection"/>
-    <fullyQualifiedTypeName name="db.DB"/>
     <fullyQualifiedTypeName name="model.dao.impl.CopyDaoJDBC"/>
-    <fullyQualifiedTypeName name="copies.enums.CopyStatus"/>
-    <fullyQualifiedTypeName name="services.LoanService"/>
     <fullyQualifiedTypeName name="model.dao.impl.LoanDaoJDBC"/>
-    <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="model.dao.LoanDao"/>
     <fullyQualifiedTypeName name="model.entities.Copy"/>
+    <fullyQualifiedTypeName name="java.lang.IllegalStateException"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="model.exceptions.BusinessException"/>
+    <fullyQualifiedTypeName name="services.LoanService"/>
+    <fullyQualifiedTypeName name="copies.enums.CopyStatus"/>
+    <fullyQualifiedTypeName name="db.DB"/>
+    <fullyQualifiedTypeName name="application.InputUtils"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

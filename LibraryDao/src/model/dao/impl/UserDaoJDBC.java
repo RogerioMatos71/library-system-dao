@@ -193,7 +193,11 @@ public class UserDaoJDBC implements UserDao {
 
 			}
 
-			st = conn.prepareStatement("SELECT * FROM users " + "WHERE cpf = ?");
+			st = conn.prepareStatement(
+					"SELECT * FROM library.users " +
+				    "WHERE cpf = ?");
+				
+
 			st.setString(1, cpf);
 			rs = st.executeQuery();
 			if (rs.next()) {

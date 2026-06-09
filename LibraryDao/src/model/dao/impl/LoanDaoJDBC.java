@@ -199,4 +199,48 @@ public class LoanDaoJDBC implements LoanDao {
 
 		return loan;
 	}
+
+	@Override
+	public Loan findByCpf(String cpf) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		if (cpf == null) {
+			throw new DbException("CPF not found!");
+		}
+		
+		Loan loan = new Loan();
+		try {
+			st = conn.prepareStatement("SELECT " +
+				    "u.id AS userId, " +
+				    "u.name AS userName, " +
+				    "u.cpf, " +
+				    "u.email, " +
+				    "b.id AS bookId, " +
+				    "b.title AS bookTitle, " +
+				    "c.id AS copyId, " +
+				    "l.loan_date AS loanDate, " +
+				    "l.due_date AS dueDate, " +
+				    "l.return_date AS returnDate " +
+				"FROM loans l " +
+				"JOIN users u ON l.user_id = u.id " +
+				"JOIN copies c ON l.copy_id = c.id " +
+				"JOIN books b ON c.book_id = b.id " +
+				"WHERE u.name = ?");
+			
+			st.setString(1, cpf);
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				 loan = instantiateLoan(rs);
+			}
+			 return loan;
+			
+		}  catch (SQLException e) {
+			throw new DbException (e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 }

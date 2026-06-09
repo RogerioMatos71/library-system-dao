@@ -71,6 +71,7 @@ public class Loan {
 
 	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
+		
 	}
 
 	@Override
