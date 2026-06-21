@@ -13,18 +13,36 @@ public class InputUtils {
 		int value = sc.nextInt();
 		sc.nextLine();
 		return value;
-		
 
 	}
-	
+
 	public static String readLine(String msg) {
 		System.out.print(msg);
 		return sc.nextLine();
 	}
-	
+
 	public static void pause() {
 		System.out.println("\nPress enter to continue...");
 		sc.nextLine();
 	}
 
+	public static boolean readConfirmation() {
+		char enter;
+		do {
+			System.out.println("Enter the option: (Y)DELETE  (N)CANCEL");
+			enter = sc.nextLine().charAt(0);
+
+			if (enter != 'y' && enter != 'n') {
+				System.out.println("Invalid entered! Try again");
+			}
+
+		}
+
+		while (enter != 'y' && enter != 'n');
+
+		if (enter == 'y') {
+			return true;
+		}
+		return false;
+	}
 }

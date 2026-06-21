@@ -1,7 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import model.dao.BookDao;
@@ -28,7 +26,7 @@ public class MenuController {
 
 			switch (option) {
 
-			case 1:
+			case 1: {
 
 				UserDao userDao = DaoFactory.createUserDao();
 
@@ -45,36 +43,26 @@ public class MenuController {
 				InputUtils.pause();
 
 				break;
+			}
 
-			case 2:
+			case 2: {
 
 				LoanDao loanDao = DaoFactory.createLoanDao();
 
-				
+				String cpf = InputUtils.readLine("Enter user cpf to consult: ");
 
-				
-				String cpf = null;
-				while (cpf == null) {
-					 InputUtils.readLine("Enter user name to consult: ");
+				Loan loan = loanDao.findByCpf(cpf);
 
-					 Loan loan = loanDao.findByCpf(cpf);
+				System.out.println(loan);
 
-					if (cpf == null) {
-						System.out.println("User not found, try again");
-					}
-				}
-
-				System.out.println(loans);
-				
 				InputUtils.pause();
-				
-				
 
 				break;
+			}
 
-			case 3:
+			case 3: {
 
-				userDao = DaoFactory.createUserDao();
+				UserDao userDao = DaoFactory.createUserDao();
 
 				userDao.deleteById(InputUtils.readInt("Enter user id to delete: "));
 
@@ -84,7 +72,8 @@ public class MenuController {
 
 				break;
 
-			case 4:
+			}
+			case 4: {
 
 				BookDao bookDao = DaoFactory.createBookDao();
 
@@ -103,10 +92,13 @@ public class MenuController {
 				InputUtils.pause();
 
 				break;
+			}
 
-			case 5:
+			case 5: {
 
-				bookDao = DaoFactory.createBookDao();
+				Book book;
+
+				BookDao bookDao = DaoFactory.createBookDao();
 
 				book = bookDao.findById(InputUtils.readInt("Insert book id to consult: "));
 
@@ -115,10 +107,39 @@ public class MenuController {
 				InputUtils.pause();
 
 				break;
+			}
 
-			case 10:
+			case 6: {
 
+				BookDao bookDao = DaoFactory.createBookDao();
+
+				Book book = new Book();
+
+				book = bookDao.findById(InputUtils.readInt("Insert book id to delete: "));
+
+				System.out.println(book);
+
+				boolean confirmation = InputUtils.readConfirmation();
 				
+				if (confirmation) {
+
+				bookDao.deleteById(book.getId());
+				
+				System.out.println("Book deleted!");
+				
+				} 
+				else  {
+					System.out.println("Canceled operation!");
+				}
+
+				InputUtils.pause();
+
+				break;
+
+			}
+
+			case 10: {
+
 				LoanService loanService = new LoanService();
 				String cpf = InputUtils.readLine("Enter user cpf: ");
 				int copyId = InputUtils.readInt("Enter copy id: ");
@@ -130,12 +151,13 @@ public class MenuController {
 				InputUtils.pause();
 
 				break;
+			}
 
-			case 11:
+			case 11: {
 
-				loanService = new LoanService();
+				LoanService loanService = new LoanService();
 
-				cpf = InputUtils.readLine("Enter user cpf: ");
+				String cpf = InputUtils.readLine("Enter user cpf: ");
 				int loanId = InputUtils.readInt("Enter loan id to return: ");
 
 				loanService.returnBook(cpf, loanId);
@@ -145,11 +167,10 @@ public class MenuController {
 				InputUtils.pause();
 
 				break;
-
 			}
 
+			}
 		} while (option != 0);
 
 	}
-
 }

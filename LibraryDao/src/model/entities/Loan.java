@@ -76,8 +76,8 @@ public class Loan {
 
 	@Override
 	public String toString() {
-		return "Loan Loan_id = " + id + ", User = " + user + ", Copy = " + copy + ", Loan_Date = " + loanDate + ", Due_Date = "
-				+ dueDate + ", Return_Date = " + returnDate;
+		return "Loan id = " + id + ", User = " + user + ", Copy = " + copy + ", Loan Date = " + loanDate + ", Due Date = "
+				+ dueDate + ", Return Date = " + returnDate;
 	}
 	
 	

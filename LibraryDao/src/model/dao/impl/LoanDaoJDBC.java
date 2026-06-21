@@ -170,32 +170,35 @@ public class LoanDaoJDBC implements LoanDao {
 		Book book = new Book();
 
 		// USER
-		user.setId(rs.getInt("user_id"));
-		user.setName(rs.getString("user_name"));
-		user.setCpf(rs.getString("cpf"));
-		user.setEmail(rs.getString("email"));
+		user.setId(rs.getInt("userId"));
+		user.setName(rs.getString("userName"));
+		//user.setCpf(rs.getString("cpf"));
+		//user.setEmail(rs.getString("email"));
 
 		// BOOK
-		book.setId(rs.getInt("book_id"));
-		book.setTitle(rs.getString("title"));
-		book.setAuthor(rs.getString("author"));
-		book.setIsbn(rs.getString("isbn"));
-		book.setPublisher(rs.getString("publisher"));
-		book.setYearPublication(rs.getInt("year_publication"));
-
+		
+		//book.setId(rs.getInt("bookId"));
+		book.setTitle(rs.getString("bookTitle"));
+		
+		
 		// COPY
-		copy.setId(rs.getInt("copy_id"));
-		copy.setStatus(CopyStatus.valueOf(rs.getString("status")));
-		copy.setBook(book);
+		copy.setId(rs.getInt("copyId"));
+		
+		copy.setStatus(CopyStatus.valueOf(rs.getString("copyStatus")));
+		
 
 		// LOAN
-		loan.setId(rs.getInt("id"));
-		loan.setLoanDate(rs.getObject("loan_date", LocalDate.class));
-		loan.setDueDate(rs.getObject("due_date", LocalDate.class));
-		loan.setReturnDate(rs.getObject("return_date", LocalDate.class));
+		loan.setId(rs.getInt("loanId"));
+		
+		
+		loan.setLoanDate(rs.getObject("loanDate", LocalDate.class));
+		loan.setDueDate(rs.getObject("dueDate", LocalDate.class));
+		loan.setReturnDate(rs.getObject("returnDate", LocalDate.class));
 
 		loan.setUser(user);
 		loan.setCopy(copy);
+		copy.setBook(book);
+		
 
 		return loan;
 	}
@@ -214,11 +217,10 @@ public class LoanDaoJDBC implements LoanDao {
 			st = conn.prepareStatement("SELECT " +
 				    "u.id AS userId, " +
 				    "u.name AS userName, " +
-				    "u.cpf, " +
-				    "u.email, " +
-				    "b.id AS bookId, " +
 				    "b.title AS bookTitle, " +
 				    "c.id AS copyId, " +
+				    "c.status AS copyStatus, " +
+				    "l.id AS loanId, " +
 				    "l.loan_date AS loanDate, " +
 				    "l.due_date AS dueDate, " +
 				    "l.return_date AS returnDate " +
@@ -226,7 +228,7 @@ public class LoanDaoJDBC implements LoanDao {
 				"JOIN users u ON l.user_id = u.id " +
 				"JOIN copies c ON l.copy_id = c.id " +
 				"JOIN books b ON c.book_id = b.id " +
-				"WHERE u.name = ?");
+				"WHERE u.cpf = ?");
 			
 			st.setString(1, cpf);
 			rs = st.executeQuery();

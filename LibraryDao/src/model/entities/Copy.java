@@ -65,7 +65,7 @@ public class Copy {
 	@Override
 	public String toString() {
 	    return "Copy_id: " + id
-	        + "\nBook_id: " + book.getId()
+	        
 	        + "\nStatus: " + status
 	        + "\n";
 	}
