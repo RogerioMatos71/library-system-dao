@@ -1,0 +1,202 @@
+package model.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import copies.enums.CopyStatus;
+import db.DB;
+import db.DbException;
+import model.dao.CopyDao;
+import model.entities.Book;
+import model.entities.Copy;
+
+public class CopyDaoJDBC implements CopyDao {
+
+	private Connection conn;
+
+	public CopyDaoJDBC(Connection conn) {
+		this.conn = conn;
+	}
+
+	@Override
+	public void insert(Copy copy) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("INSERT INTO copies (book_id, status) VALUES (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			st.setInt(1, copy.getBook().getId());
+			st.setString(2, copy.getStatus().name());
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected > 0) {
+				rs = st.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					copy.setId(id);
+				}
+			} else {
+				throw new DbException("Unexpected error! No rows affected!");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+	}
+
+	@Override
+	public void deleteById(Integer id) {
+		PreparedStatement st = null;
+
+		if (id == null) {
+			throw new DbException("Invalid copy id!");
+		}
+
+		try {
+			st = conn.prepareStatement("DELETE FROM copies WHERE id = ?");
+
+			st.setInt(1, id);
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected == 0) {
+				throw new DbException("No copy id found!");
+			}
+		} catch (SQLException e) {
+			new DbException("Error updating copy", e);
+
+		} finally {
+			DB.closeStatement(st);
+		}
+
+	}
+
+	@Override
+	public Copy findById(Integer id) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		if (id == null) {
+			throw new DbException("Invalid copy id!");
+		}
+
+		try {
+			st = conn.prepareStatement("SELECT * FROM copies WHERE id = ?");
+
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Copy copy = instantiateCopy(rs);
+
+				return copy;
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+
+		return null;
+	}
+
+	private Copy instantiateCopy(ResultSet rs) throws SQLException {
+		Copy copy = new Copy();
+		Book book = new Book();
+
+		copy.setId(rs.getInt("id"));
+		book.setId(rs.getInt("book_id"));
+		copy.setBook(book);
+		copy.setStatus(CopyStatus.valueOf(rs.getString("status")));
+		return copy;
+
+	}
+
+	@Override
+	public List<Copy> findAll() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		List<Copy> copies = new ArrayList<>();
+
+		try {
+			st = conn.prepareStatement("SELECT * FROM copies");
+
+			rs = st.executeQuery();
+			while (rs.next()) {
+
+				Copy copy = instantiateCopy(rs);
+
+				copies.add(copy);
+			}
+
+			if (copies.isEmpty()) {
+				throw new DbException("Copies not found!");
+			}
+
+			return copies;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	@Override
+	public void upDate(Copy copy) {
+		PreparedStatement st = null;
+
+		try {
+			st = conn.prepareStatement("UPDATE copies SET status = ?  WHERE id = ?");
+
+			st.setString(1, copy.getStatus().name());
+			st.setInt(2, copy.getId());
+
+			st.executeUpdate();
+		}
+
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+
+		}
+	}
+
+	public boolean hasCopies(int bookId) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT " + "COUNT(*) AS total, " + "SUM(status = 'BORROWED') AS borrowed "
+					+ "FROM copies " + "WHERE book_id = ?");
+			st.setInt(1, bookId);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+				int total = rs.getInt("total");
+				int borrowed = rs.getInt("borrowed");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+
+	}
+
+}

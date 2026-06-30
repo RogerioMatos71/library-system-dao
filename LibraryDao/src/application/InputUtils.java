@@ -30,17 +30,17 @@ public class InputUtils {
 		char enter;
 		do {
 			System.out.println("Enter the option: (Y)DELETE  (N)CANCEL");
-			enter = sc.nextLine().charAt(0);
+			enter = sc.nextLine().toUpperCase().charAt(0);
 
-			if (enter != 'y' && enter != 'n') {
+			if (enter != 'Y' && enter != 'N') {
 				System.out.println("Invalid entered! Try again");
 			}
 
 		}
 
-		while (enter != 'y' && enter != 'n');
+		while (enter != 'Y' && enter != 'N');
 
-		if (enter == 'y') {
+		if (enter == 'Y') {
 			return true;
 		}
 		return false;

@@ -1,0 +1,38 @@
+package services;
+
+import java.util.List;
+
+import copies.enums.CopyStatus;
+import db.DB;
+import model.dao.BookDao;
+import model.dao.CopyDao;
+import model.dao.impl.BookDaoJDBC;
+import model.dao.impl.CopyDaoJDBC;
+import model.entities.Copy;
+
+public class BookService {
+
+	private CopyDao copyDao;
+	private BookDao bookDao;
+	private List<Copy> copies;
+	
+
+	public BookService() {
+		copyDao = new CopyDaoJDBC(DB.getConnection());
+		bookDao = new BookDaoJDBC(DB.getConnection());
+	}
+
+	public boolean checkDeletionStatus(Copy copy, int bookId) {
+		return copy.getBook().getId() == bookId && copy.getStatus() == CopyStatus.AVAILABLE;
+		
+	}
+	
+	public void deleteBook(int bookId) {
+		
+	}
+	
+	public void deleteBookAndCopies(int bookId) {
+		
+	}
+
+}

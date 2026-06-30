@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import copies.enums.CopyDeletionStatus;
 import copies.enums.CopyStatus;
 import db.DB;
 import db.DbException;
@@ -175,4 +176,58 @@ public class CopyDaoJDBC implements CopyDao {
 
 		}
 	}
+
+	public CopyDeletionStatus getStatusCopiesDeletion(int bookId) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT " + "COUNT(*) AS total, " + "SUM(status = 'BORROWED') AS borrowed "
+					+ "FROM copies " + "WHERE book_id = ?");
+			st.setInt(1, bookId);
+			rs = st.executeQuery();
+
+			if (rs.next()) {
+				int total = rs.getInt("total");
+				int borrowed = rs.getInt("borrowed");
+
+				if (total == 0) {
+					return CopyDeletionStatus.NONE;
+				} else if (borrowed > 0) {
+					return CopyDeletionStatus.BORROWED;
+				}
+				return CopyDeletionStatus.AVAILABLE;
+			}
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+		throw new DbException("Query did not return any result");
+
+	}
+
+	@Override
+	public void deleteByBookId(int bookId) {
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("DELETE FROM copies WHERE book_id = ?");
+			st.setInt(1, bookId);
+			
+			int rowsAffected = st.executeUpdate();
+			if (rowsAffected == 0) {
+				throw new DbException("Expected copies to delete, but none were found.");
+			}
+		} catch (SQLException e) {
+			throw new DbException("Error deleting copies for book id: " + bookId, e);
+			
+		} finally {
+			DB.closeStatement(st);
+		}
+		   
+	}
+
 }

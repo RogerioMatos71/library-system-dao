@@ -2,6 +2,7 @@ package model.dao;
 
 import java.util.List;
 
+import copies.enums.CopyDeletionStatus;
 import model.entities.Copy;
 
 public interface CopyDao {
@@ -9,8 +10,10 @@ public interface CopyDao {
 	void insert(Copy copy);
 	void upDate(Copy copy);
 	void deleteById(Integer id);
+	void deleteByBookId(int bookId);
 	Copy findById(Integer id);
-
 	List<Copy> findAll();
+	
+	CopyDeletionStatus getStatusCopiesDeletion(int bookId);
 
 }

@@ -2,13 +2,16 @@ package application;
 
 import java.util.Scanner;
 
+import copies.enums.CopyDeletionStatus;
 import model.dao.BookDao;
 import model.dao.DaoFactory;
 import model.dao.LoanDao;
 import model.dao.UserDao;
 import model.entities.Book;
+import model.entities.Copy;
 import model.entities.Loan;
 import model.entities.User;
+import services.BookService;
 import services.LoanService;
 
 public class MenuController {
@@ -64,7 +67,15 @@ public class MenuController {
 
 				UserDao userDao = DaoFactory.createUserDao();
 
-				userDao.deleteById(InputUtils.readInt("Enter user id to delete: "));
+				int id = InputUtils.readInt("Enter user id to delete: ");
+				
+				User user = userDao.findById(id);
+				
+				System.out.println(user);
+				
+				if (InputUtils.readConfirmation() == true) {
+					userDao.deleteById(id);
+				}
 
 				System.out.println("User deleted!");
 
@@ -111,30 +122,48 @@ public class MenuController {
 
 			case 6: {
 
+				BookService bookService = new BookService();
 				BookDao bookDao = DaoFactory.createBookDao();
 
-				Book book = new Book();
+				int bookId = InputUtils.readInt("Insert book id to delete: ");
 
-				book = bookDao.findById(InputUtils.readInt("Insert book id to delete: "));
+				Book book = bookDao.findById(bookId);
 
 				System.out.println(book);
 
-				boolean confirmation = InputUtils.readConfirmation();
-				
-				if (confirmation) {
+				CopyDeletionStatus status = bookService.checkDeletionBook(bookId);
 
-				bookDao.deleteById(book.getId());
-				
-				System.out.println("Book deleted!");
-				
-				} 
-				else  {
-					System.out.println("Canceled operation!");
+				if (status == CopyDeletionStatus.BORROWED) {
+					System.out.println("Cannot delete book: borrowed copies exist!");
+					InputUtils.pause();
+					break;
+
+				} else if (status == CopyDeletionStatus.AVAILABLE) {
+					System.out.println(
+							"There are copies of this book that will also be deleted; do you wish to continue? (Y) (N)");
+					boolean confirm = InputUtils.readConfirmation();
+					if (confirm == true) {
+						bookService.deleteBookAndCopies(bookId);
+						System.out.println("Deleted book and copies!");
+						InputUtils.pause();
+						break;
+					}
+					System.out.println("Canceled operation");
+					InputUtils.pause();
+					break;
+
+				} else if (status == CopyDeletionStatus.NONE) {
+					System.out.println("The book will be deleted. Are you sure you want to continue? (Y) (N)");
+					if (InputUtils.readConfirmation() == true) {
+						bookService.deleteBook(bookId);
+						System.out.println("Deleted book!");
+						InputUtils.pause();
+						break;
+					}
+					System.out.println("Canceled operation");
+					InputUtils.pause();
+					break;
 				}
-
-				InputUtils.pause();
-
-				break;
 
 			}
 

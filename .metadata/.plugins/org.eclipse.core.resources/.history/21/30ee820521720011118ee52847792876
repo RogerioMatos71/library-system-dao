@@ -1,0 +1,19 @@
+package model.dao;
+
+import java.util.List;
+
+import copies.enums.CopyDeletionStatus;
+import model.entities.Copy;
+
+public interface CopyDao {
+
+	void insert(Copy copy);
+	void upDate(Copy copy);
+	void deleteById(Integer id);
+	void deleteByBookId(int bookId);
+	Copy findById(int id);
+
+	List<Copy> findAll();
+	CopyDeletionStatus getStatusCopiesDeletion(int bookId);
+
+}

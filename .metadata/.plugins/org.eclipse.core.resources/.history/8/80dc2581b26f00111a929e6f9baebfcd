@@ -1,0 +1,35 @@
+package services;
+
+import java.util.List;
+
+import db.DB;
+import model.dao.BookDao;
+import model.dao.CopyDao;
+import model.dao.impl.BookDaoJDBC;
+import model.dao.impl.CopyDaoJDBC;
+import model.entities.Copy;
+
+public class BookService {
+
+	private CopyDao copyDao;
+	private BookDao bookDao;
+	private List<Copy> copies; 
+
+	public BookService() {
+		copyDao = new CopyDaoJDBC(DB.getConnection());
+		bookDao = new BookDaoJDBC(DB.getConnection());
+	}
+
+	public boolean validDeleteBook(int copyId, int bookId) {
+		
+	 Copy copy = copyDao.findById(copyId);
+
+		if (copy.equals(copy) == bookId) {
+
+		}
+
+		return false;
+
+	}
+
+}

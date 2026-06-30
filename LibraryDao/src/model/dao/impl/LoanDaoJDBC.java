@@ -170,76 +170,64 @@ public class LoanDaoJDBC implements LoanDao {
 		Book book = new Book();
 
 		// USER
-		user.setId(rs.getInt("userId"));
-		user.setName(rs.getString("userName"));
-		//user.setCpf(rs.getString("cpf"));
-		//user.setEmail(rs.getString("email"));
+		user.setId(rs.getInt("user_id"));
+		user.setName(rs.getString("user_name"));
+		// user.setCpf(rs.getString("cpf"));
+		// user.setEmail(rs.getString("email"));
 
 		// BOOK
-		
-		//book.setId(rs.getInt("bookId"));
-		book.setTitle(rs.getString("bookTitle"));
-		
-		
+
+		// book.setId(rs.getInt("bookId"));
+		book.setTitle(rs.getString("title"));
+
 		// COPY
-		copy.setId(rs.getInt("copyId"));
-		
-		copy.setStatus(CopyStatus.valueOf(rs.getString("copyStatus")));
-		
+		copy.setId(rs.getInt("copy_Id"));
+
+		copy.setStatus(CopyStatus.valueOf(rs.getString("status")));
 
 		// LOAN
-		loan.setId(rs.getInt("loanId"));
-		
-		
-		loan.setLoanDate(rs.getObject("loanDate", LocalDate.class));
-		loan.setDueDate(rs.getObject("dueDate", LocalDate.class));
-		loan.setReturnDate(rs.getObject("returnDate", LocalDate.class));
+		loan.setId(rs.getInt("id"));
+
+		loan.setLoanDate(rs.getObject("loan_Date", LocalDate.class));
+		loan.setDueDate(rs.getObject("due_Date", LocalDate.class));
+		loan.setReturnDate(rs.getObject("return_Date", LocalDate.class));
 
 		loan.setUser(user);
 		loan.setCopy(copy);
 		copy.setBook(book);
-		
 
 		return loan;
 	}
 
 	@Override
-	public Loan findByCpf(String cpf) {
+	public List<Loan> findByCpf(String cpf) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
-		if (cpf == null) {
-			throw new DbException("CPF not found!");
+
+		if (cpf == null || cpf.isBlank()) {
+			throw new DbException("CPF cannot be null or empty!");
 		}
-		
-		Loan loan = new Loan();
+
 		try {
-			st = conn.prepareStatement("SELECT " +
-				    "u.id AS userId, " +
-				    "u.name AS userName, " +
-				    "b.title AS bookTitle, " +
-				    "c.id AS copyId, " +
-				    "c.status AS copyStatus, " +
-				    "l.id AS loanId, " +
-				    "l.loan_date AS loanDate, " +
-				    "l.due_date AS dueDate, " +
-				    "l.return_date AS returnDate " +
-				"FROM loans l " +
-				"JOIN users u ON l.user_id = u.id " +
-				"JOIN copies c ON l.copy_id = c.id " +
-				"JOIN books b ON c.book_id = b.id " +
-				"WHERE u.cpf = ?");
-			
+
+			st = conn.prepareStatement("SELECT " + "u.id AS user_Id, " + "u.name AS user_name, " + "b.title AS title, "
+					+ "c.id AS copy_id, " + "c.status AS status, " + "l.id AS id, " + "l.loan_date AS loan_date, "
+					+ "l.due_date AS due_date, " + "l.return_date AS return_date " + "FROM loans l "
+					+ "JOIN users u ON l.user_id = u.id " + "JOIN copies c ON l.copy_id = c.id "
+					+ "JOIN books b ON c.book_id = b.id " + "WHERE u.cpf = ?");
+
 			st.setString(1, cpf);
 			rs = st.executeQuery();
-			
+
+			List<Loan> loans = new ArrayList<>();
+
 			while (rs.next()) {
-				 loan = instantiateLoan(rs);
+				loans.add(instantiateLoan(rs));
 			}
-			 return loan;
-			
-		}  catch (SQLException e) {
-			throw new DbException (e.getMessage());
+			return loans;
+
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
 		} finally {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);

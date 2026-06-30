@@ -12,5 +12,5 @@ public interface LoanDao {
     List<Loan> findByUser(String name);
     //List<Loan> findActiveLoansByUserId();
     void update(Loan loan);
-	Loan findByCpf(String cpf);
+    List<Loan> findByCpf(String cpf);
 }
