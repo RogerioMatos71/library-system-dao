@@ -1,9 +1,0 @@
-package copies.enums;
-
-public enum CopyDeletionStatus {
-	
-	NO_COPIES,
-	HAS_AVAILABLE_COPIES,
-	HAS_BORROWED_COPIES
-
-}

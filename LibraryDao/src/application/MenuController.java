@@ -1,5 +1,6 @@
 package application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import copies.enums.CopyDeletionStatus;
@@ -8,7 +9,6 @@ import model.dao.DaoFactory;
 import model.dao.LoanDao;
 import model.dao.UserDao;
 import model.entities.Book;
-import model.entities.Copy;
 import model.entities.Loan;
 import model.entities.User;
 import services.BookService;
@@ -54,9 +54,9 @@ public class MenuController {
 
 				String cpf = InputUtils.readLine("Enter user cpf to consult: ");
 
-				Loan loan = loanDao.findByCpf(cpf);
+				List<Loan> loans = loanDao.findByCpf(cpf);
 
-				System.out.println(loan);
+				System.out.println(loans);
 
 				InputUtils.pause();
 
@@ -67,17 +67,18 @@ public class MenuController {
 
 				UserDao userDao = DaoFactory.createUserDao();
 
-				int id = InputUtils.readInt("Enter user id to delete: ");
-				
-				User user = userDao.findById(id);
-				
-				System.out.println(user);
-				
-				if (InputUtils.readConfirmation() == true) {
-					userDao.deleteById(id);
-				}
+				String cpf = InputUtils.readLine("Enter user cpf to delete: ");
 
-				System.out.println("User deleted!");
+				User user = userDao.findByCpf(cpf);
+
+				System.out.println(user);
+
+				if (InputUtils.readConfirmation() == true) {
+					userDao.deleteByCpf(cpf);
+					System.out.println("User deleted!");
+					InputUtils.pause();
+					break;
+				}	System.out.println("Canceled operation!");
 
 				InputUtils.pause();
 

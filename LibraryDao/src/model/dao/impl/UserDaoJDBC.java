@@ -193,10 +193,7 @@ public class UserDaoJDBC implements UserDao {
 
 			}
 
-			st = conn.prepareStatement(
-					"SELECT * FROM library.users " +
-				    "WHERE cpf = ?");
-				
+			st = conn.prepareStatement("SELECT * FROM library.users " + "WHERE cpf = ?");
 
 			st.setString(1, cpf);
 			rs = st.executeQuery();
@@ -251,5 +248,31 @@ public class UserDaoJDBC implements UserDao {
 			DB.closeResultSet(rs);
 		}
 
+	}
+
+	@Override
+	public void deleteByCpf(String cpf) {
+		PreparedStatement st = null;
+
+		if (cpf == null || cpf.isBlank()) {
+			throw new DbException("Cpf cannot be null or blank!");
+		}
+
+		try {
+
+			st = conn.prepareStatement("DELETE FROM users WHERE cpf = ?");
+
+			st.setString(1, cpf);
+
+			int rowsAffected = st.executeUpdate();
+
+			if (rowsAffected == 0) {
+				throw new DbException("No user found with this cpf!");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 	}
 }

@@ -28,12 +28,12 @@
     <fullyQualifiedTypeName name="services.LoanService"/>
     <fullyQualifiedTypeName name="copies.enums.CopyStatus"/>
     <fullyQualifiedTypeName name="model.entities.Book"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="model.dao.impl.CopyDaoJDBC"/>
-    <fullyQualifiedTypeName name="db.DbException"/>
     <fullyQualifiedTypeName name="db.DB"/>
     <fullyQualifiedTypeName name="model.dao.DaoFactory"/>
     <fullyQualifiedTypeName name="model.entities.Copy"/>
     <fullyQualifiedTypeName name="copies.enums.CopyDeletionStatus"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="db.DbException"/>
     <fullyQualifiedTypeName name="application.InputUtils"/>
 </qualifiedTypeNameHistroy>

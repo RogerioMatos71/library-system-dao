@@ -223,8 +223,12 @@ public class LoanDaoJDBC implements LoanDao {
 
 			while (rs.next()) {
 				loans.add(instantiateLoan(rs));
-			}
-			return loans;
+				
+				
+			} if (loans.isEmpty()) {
+				throw new DbException("Loans not found!");
+			} return loans;
+			
 
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
@@ -232,5 +236,6 @@ public class LoanDaoJDBC implements LoanDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
+		
 	}
 }
