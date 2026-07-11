@@ -9,6 +9,7 @@ import model.dao.CopyDao;
 import model.dao.DaoFactory;
 import model.dao.impl.BookDaoJDBC;
 import model.dao.impl.CopyDaoJDBC;
+import model.entities.Book;
 import model.entities.Copy;
 
 public class BookService {
@@ -16,10 +17,20 @@ public class BookService {
 	private CopyDao copyDao;
 	private BookDao bookDao;
 	private List<Copy> copies;
+	CopyService copyService = new CopyService();
 
 	public BookService() {
-		copyDao = new CopyDaoJDBC(DB.getConnection());
-		bookDao = new BookDaoJDBC(DB.getConnection());
+		copyDao = DaoFactory.createCopyDao();
+		bookDao = DaoFactory.createBookDao();
+
+	}
+
+	public List<Copy> insert(Book book, int quantity) {
+		bookDao.insert(book);
+		List<Copy> copies = copyService.insert(book.getId(), quantity);
+		
+		return copies;
+
 	}
 
 	public CopyDeletionStatus checkDeletionBook(int bookId) {
@@ -42,7 +53,12 @@ public class BookService {
 	public void deleteBookAndCopies(int bookId) {
 		copyDao.deleteByBookId(bookId);
 		bookDao.deleteById(bookId);
-		
+
+	}
+
+	public Book findById(int bookId) {
+		Book book = bookDao.findById(bookId);
+		return book;
 	}
 
 }

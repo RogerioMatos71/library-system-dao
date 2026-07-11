@@ -28,7 +28,7 @@ public class CopyDaoJDBC implements CopyDao {
 	public void insert(Copy copy) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
-
+        
 		try {
 			st = conn.prepareStatement("INSERT INTO copies (book_id, status) VALUES (?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
@@ -93,7 +93,19 @@ public class CopyDaoJDBC implements CopyDao {
 		}
 
 		try {
-			st = conn.prepareStatement("SELECT * FROM copies WHERE id = ?");
+			st = conn.prepareStatement("SELECT " +
+				    "c.id AS copy_id, " +
+				    "c.book_id as book_id, " +
+				    "c.status AS status, " +
+				    "b.title as title, " +
+				    "b.author as author, " +
+				    "b.isbn as isbn, " +
+				    "b.publisher as publisher, " +
+				    "b.year_publication as year_publication " +
+				    "FROM copies c " +
+				    "JOIN books b ON c.book_id = b.id " +
+				    "WHERE c.id = ?");
+
 
 			st.setInt(1, id);
 			rs = st.executeQuery();
@@ -116,10 +128,16 @@ public class CopyDaoJDBC implements CopyDao {
 		Copy copy = new Copy();
 		Book book = new Book();
 
-		copy.setId(rs.getInt("id"));
+		copy.setId(rs.getInt("copy_id"));
 		book.setId(rs.getInt("book_id"));
 		copy.setBook(book);
 		copy.setStatus(CopyStatus.valueOf(rs.getString("status")));
+		book.setTitle(rs.getString("title"));
+		book.setAuthor(rs.getString("Author"));
+		book.setIsbn(rs.getString("isbn"));
+		book.setPublisher(rs.getString("publisher"));
+		book.setYearPublication(rs.getInt("year_publication"));
+		
 		return copy;
 
 	}

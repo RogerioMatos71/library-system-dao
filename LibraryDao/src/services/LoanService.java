@@ -1,15 +1,12 @@
 package services;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import copies.enums.CopyStatus;
-import db.DB;
 import model.dao.CopyDao;
 import model.dao.LoanDao;
 import model.dao.UserDao;
-import model.dao.impl.CopyDaoJDBC;
-import model.dao.impl.LoanDaoJDBC;
-import model.dao.impl.UserDaoJDBC;
 import model.entities.Copy;
 import model.entities.Loan;
 import model.entities.User;
@@ -20,11 +17,12 @@ public class LoanService {
 	private UserDao userDao;
 	private CopyDao copyDao;
 	private LoanDao loanDao;
+	
 
-	public LoanService() {
-		userDao = new UserDaoJDBC(DB.getConnection());
-		copyDao = new CopyDaoJDBC(DB.getConnection());
-		loanDao = new LoanDaoJDBC(DB.getConnection());
+	public LoanService(UserDao userDao, CopyDao copyDao, LoanDao loanDao) {
+		this.userDao = userDao;
+		this.copyDao = copyDao;
+		this.loanDao = loanDao;
 	}
 
 	public Loan borrowBook(String cpf, Integer copyId) {
@@ -86,4 +84,18 @@ public class LoanService {
 
 	}
 
-}
+	public List<Loan> findLoansByCpf(String cpf) {
+		User user = userDao.findByCpf(cpf);
+		if (user == null) {
+			throw new BusinessException("User cpf not found!");
+		}
+		return loanDao.findByCpf(cpf);
+		
+	}
+	
+	
+	}
+	
+	
+
+

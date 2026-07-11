@@ -1,24 +1,48 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import copies.enums.CopyDeletionStatus;
+import copies.enums.CopyStatus;
 import model.dao.BookDao;
+import model.dao.CopyDao;
 import model.dao.DaoFactory;
 import model.dao.LoanDao;
 import model.dao.UserDao;
 import model.entities.Book;
+import model.entities.Copy;
 import model.entities.Loan;
 import model.entities.User;
 import services.BookService;
+import services.CopyService;
 import services.LoanService;
+import services.UserService;
 
 public class MenuController {
 
+	private LoanService loanService;
+	private UserService userService;
+	private BookService bookService;
+	private CopyService copyService;
+
 	Scanner sc = new Scanner(System.in);
 
-	public static void start() {
+	public MenuController() {
+
+		UserDao userDao = DaoFactory.createUserDao();
+		CopyDao copyDao = DaoFactory.createCopyDao();
+		LoanDao loanDao = DaoFactory.createLoanDao();
+
+		loanService = new LoanService(userDao, copyDao, loanDao);
+		userService = new UserService();
+		bookService = new BookService();
+		copyService = new CopyService();
+
+	}
+
+	public void start() {
 
 		int option;
 
@@ -31,17 +55,17 @@ public class MenuController {
 
 			case 1: {
 
-				UserDao userDao = DaoFactory.createUserDao();
-
 				User user = new User();
 
 				user.setName(InputUtils.readLine("Name: "));
 				user.setCpf(InputUtils.readLine("Cpf: "));
 				user.setEmail(InputUtils.readLine("Email: "));
 
-				userDao.insert(user);
+				userService.insert(user);
 
-				System.out.println("Inserted! New Id = " + user.getId());
+				System.out.println(user);
+
+				System.out.println("User registered successfully! New ID: " + user.getId());
 
 				InputUtils.pause();
 
@@ -50,13 +74,26 @@ public class MenuController {
 
 			case 2: {
 
-				LoanDao loanDao = DaoFactory.createLoanDao();
+				String cpf = InputUtils.readLine("Enter user cpf to consult loans: ");
 
-				String cpf = InputUtils.readLine("Enter user cpf to consult: ");
+				List<Loan> loans = loanService.findLoansByCpf(cpf);
 
-				List<Loan> loans = loanDao.findByCpf(cpf);
+				if (loans.isEmpty()) {
+					System.out.println("Loans not found!");
+					InputUtils.pause();
+					break;
+				}
+				System.out.println("User: " + loans.get(0).getUser().getName());
 
-				System.out.println(loans);
+				for (Loan loan : loans) {
+
+					System.out.println("Loan ID: " + loan.getId());
+					System.out.println("Book title: " + loan.getCopy().getBook().getTitle());
+					System.out.println("Loan date: " + loan.getLoanDate());
+					System.out.println("Due date: " + loan.getDueDate());
+					System.out.println("Return date: " + loan.getReturnDate());
+					System.out.println();
+				}
 
 				InputUtils.pause();
 
@@ -65,20 +102,19 @@ public class MenuController {
 
 			case 3: {
 
-				UserDao userDao = DaoFactory.createUserDao();
-
 				String cpf = InputUtils.readLine("Enter user cpf to delete: ");
 
-				User user = userDao.findByCpf(cpf);
+				User user = userService.findByCpf(cpf);
 
 				System.out.println(user);
 
-				if (InputUtils.readConfirmation() == true) {
-					userDao.deleteByCpf(cpf);
+				if (InputUtils.readConfirmation()) {
+					userService.delete(cpf);
 					System.out.println("User deleted!");
 					InputUtils.pause();
 					break;
-				}	System.out.println("Canceled operation!");
+				}
+				System.out.println("Canceled operation!");
 
 				InputUtils.pause();
 
@@ -86,8 +122,6 @@ public class MenuController {
 
 			}
 			case 4: {
-
-				BookDao bookDao = DaoFactory.createBookDao();
 
 				Book book = new Book();
 
@@ -97,9 +131,17 @@ public class MenuController {
 				book.setPublisher(InputUtils.readLine("Publisher: "));
 				book.setYearPublication(InputUtils.readInt("Year Publication: "));
 
-				bookDao.insert(book);
+				int quantity = InputUtils.readInt("Enter copies quantity to added: ");
 
-				System.out.println("Book inserted! New Id: " + book.getId());
+				List<Copy> copies = bookService.insert(book, quantity);
+
+				System.out.println("Book registered successfully! New ID: " + book.getId());
+
+				System.out.println("New ID copies");
+
+				for (Copy copy : copies) {
+					System.out.println("Copy ID: " + copy.getId());
+				}
 
 				InputUtils.pause();
 
@@ -108,13 +150,11 @@ public class MenuController {
 
 			case 5: {
 
-				Book book;
+				Book book = bookService.findById(InputUtils.readInt("Insert book id to consult: "));
 
-				BookDao bookDao = DaoFactory.createBookDao();
-
-				book = bookDao.findById(InputUtils.readInt("Insert book id to consult: "));
-
-				System.out.println(book);
+				System.out.println("Title: " + book.getTitle());
+				System.out.println("Author: " + book.getAuthor());
+				System.out.println("Publisher: " + book.getPublisher());
 
 				InputUtils.pause();
 
@@ -123,12 +163,9 @@ public class MenuController {
 
 			case 6: {
 
-				BookService bookService = new BookService();
-				BookDao bookDao = DaoFactory.createBookDao();
-
 				int bookId = InputUtils.readInt("Insert book id to delete: ");
 
-				Book book = bookDao.findById(bookId);
+				Book book = bookService.findById(bookId);
 
 				System.out.println(book);
 
@@ -168,24 +205,113 @@ public class MenuController {
 
 			}
 
-			case 10: {
+			case 7: {
 
-				LoanService loanService = new LoanService();
-				String cpf = InputUtils.readLine("Enter user cpf: ");
-				int copyId = InputUtils.readInt("Enter copy id: ");
+				int bookId = InputUtils.readInt("Insert book ID to add copy: ");
+				Book book = bookService.findById(bookId);
 
-				Loan loan = loanService.borrowBook(cpf, copyId);
+				int quantity = InputUtils.readInt("Enter the copies quantity: ");
 
-				System.out.println("Book borrowed! New Loan id: " + loan.getId());
+				System.out.println("Title: " + book.getTitle());
+				System.out.println("Check the book title to add the copy");
+				boolean confirm = InputUtils.readConfirmation();
+				if (confirm == false) {
+					System.out.println("Canceled operation!");
+					InputUtils.pause();
+					break;
+				} else {
+
+					List<Copy> copies = copyService.insert(bookId, quantity);
+
+					System.out.println("Copy successfully inserted!");
+
+					for (Copy copy : copies) {
+						System.out.println("Copy ID: " + copy.getId());
+					}
+
+					InputUtils.pause();
+
+					break;
+
+				}
+			}
+
+			case 8: {
+
+				int copyId = InputUtils.readInt("Enter copy ID to consult: ");
+
+				Copy copy = copyService.findById(copyId);
+
+				System.out.println(copy);
 
 				InputUtils.pause();
 
 				break;
+
+			}
+
+			case 9: {
+
+				int copyId = InputUtils.readInt("Enter copy Id to delete: ");
+				Copy copy = copyService.findById(copyId);
+
+				CopyStatus status = copy.getStatus();
+
+				if (status == CopyStatus.BORROWED) {
+					System.out.println("Cannot delete copy, this is borrowed!");
+					InputUtils.pause();
+					break;
+
+				} else if (status == CopyStatus.AVAILABLE) {
+
+					System.out.println("Title: " + copy.getBook().getTitle());
+					System.out.println("Confirm the title to delete copy");
+
+					if (InputUtils.readConfirmation() == true) {
+						copyService.delete(copyId);
+						System.out.println("Deleted copy!");
+						InputUtils.pause();
+						break;
+					}
+					System.out.println("Canceled operation!");
+					InputUtils.pause();
+					break;
+				}
+			}
+
+			case 10: {
+
+				String cpf = InputUtils.readLine("Enter user cpf: ");
+				int copyId = InputUtils.readInt("Enter copy id: ");
+
+				User user = userService.findByCpf(cpf);
+				Copy copy = copyService.findById(copyId);
+
+				System.out.println(user);
+				System.out.println("Title: " + copy.getBook().getTitle());
+				System.out.println();
+				System.out.println("Confirm the borrow? ");
+				boolean confirm = InputUtils.readConfirmation();
+
+				if (confirm == true) {
+					Loan loan = loanService.borrowBook(cpf, copyId);
+
+					System.out.println("Book borrowed! New Loan id: " + loan.getId());
+
+					InputUtils.pause();
+
+					break;
+
+				}
+				System.out.println("Canceled operation!");
+
+				InputUtils.pause();
+
+				break;
+
 			}
 
 			case 11: {
-
-				LoanService loanService = new LoanService();
 
 				String cpf = InputUtils.readLine("Enter user cpf: ");
 				int loanId = InputUtils.readInt("Enter loan id to return: ");

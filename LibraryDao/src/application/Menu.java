@@ -10,7 +10,7 @@ public class Menu {
 		System.out.println("======== MENU ========");
 		
 		System.out.println("1 - Add user");
-		System.out.println("2 - Consult user");
+		System.out.println("2 - Consult user loans");
 		System.out.println("3 - Delete user");
 		System.out.println("4 - Add book");
 		System.out.println("5 - Consult book");
